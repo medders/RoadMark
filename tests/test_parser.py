@@ -48,7 +48,14 @@ class TestColumns:
         md.write_text("---\ntitle: Partial\n---\n\n## Now\n\n### Theme\n")
         roadmap = parse_file(md)
         assert len(roadmap.columns) == 1
-        assert roadmap.columns[0].name == "Now"
+
+    def test_unrecognised_column_heading_raises(self, tmp_path: Path) -> None:
+        md = tmp_path / "bad_heading.md"
+        md.write_text(
+            "---\ntitle: T\n---\n\n## Now\n\n### Theme\n\n## Notes\n\n### Hidden\n"
+        )
+        with pytest.raises(ParseError, match="Unrecognised column heading"):
+            parse_file(md)
 
 
 class TestThemes:

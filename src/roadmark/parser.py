@@ -90,8 +90,10 @@ def _parse_body(content: str) -> list[Column]:
                     columns.append(current_column)
                     current_theme = None
                 else:
-                    current_column = None
-                    current_theme = None
+                    raise ParseError(
+                        f"Unrecognised column heading: {text!r}. "
+                        f"Valid columns are: {', '.join(sorted(VALID_COLUMNS))}."
+                    )
 
             elif level == 3 and current_column is not None:
                 current_theme = Theme(name=text)
