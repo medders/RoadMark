@@ -1,8 +1,8 @@
 /* Dark developer theme with status dot column indicators */
 /* ── Reset & base ───────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.roadmark-scope *, .roadmark-scope *::before, .roadmark-scope *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
+.roadmark-scope {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
                Helvetica, Arial, sans-serif;
   background: #0d1117;
@@ -12,23 +12,23 @@ body {
   flex-direction: column;
 }
 
-a { color: #58a6ff; }
-a:hover { text-decoration: underline; }
+.roadmark-scope a { color: #58a6ff; }
+.roadmark-scope a:hover { text-decoration: underline; }
 
 /* ── Header ─────────────────────────────────────────────────────────── */
-.header {
+.roadmark-scope .header {
   background: #161b22;
   border-bottom: 1px solid #30363d;
   padding: 16px 24px;
 }
 
-.header__title {
+.roadmark-scope .header__title {
   font-size: 1.25rem;
   font-weight: 600;
   color: #e6edf3;
 }
 
-.header__meta {
+.roadmark-scope .header__meta {
   margin-top: 6px;
   display: flex;
   flex-wrap: wrap;
@@ -37,13 +37,13 @@ a:hover { text-decoration: underline; }
   color: #8b949e;
 }
 
-.header__meta-item {
+.roadmark-scope .header__meta-item {
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-.header__description {
+.roadmark-scope .header__description {
   margin-top: 6px;
   font-size: 0.84rem;
   color: #8b949e;
@@ -51,7 +51,7 @@ a:hover { text-decoration: underline; }
 }
 
 /* ── Board ──────────────────────────────────────────────────────────── */
-.board {
+.roadmark-scope .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
@@ -61,16 +61,16 @@ a:hover { text-decoration: underline; }
 }
 
 /* ── Column ─────────────────────────────────────────────────────────── */
-.column {}
+.roadmark-scope .column {}
 
-.column__header {
+.roadmark-scope .column__header {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 12px;
 }
 
-.column__badge {
+.roadmark-scope .column__badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -82,7 +82,7 @@ a:hover { text-decoration: underline; }
   border: 1px solid #30363d;
 }
 
-.column--now .column__badge::before {
+.roadmark-scope .column--now .column__badge::before {
   content: "";
   width: 8px; height: 8px;
   border-radius: 50%;
@@ -90,7 +90,7 @@ a:hover { text-decoration: underline; }
   flex-shrink: 0;
 }
 
-.column--next .column__badge::before {
+.roadmark-scope .column--next .column__badge::before {
   content: "";
   width: 8px; height: 8px;
   border-radius: 50%;
@@ -98,7 +98,7 @@ a:hover { text-decoration: underline; }
   flex-shrink: 0;
 }
 
-.column--later .column__badge::before {
+.roadmark-scope .column--later .column__badge::before {
   content: "";
   width: 8px; height: 8px;
   border-radius: 50%;
@@ -106,7 +106,7 @@ a:hover { text-decoration: underline; }
   flex-shrink: 0;
 }
 
-.column__count {
+.roadmark-scope .column__count {
   font-size: 0.72rem;
   color: #8b949e;
   background: #21262d;
@@ -116,13 +116,13 @@ a:hover { text-decoration: underline; }
   font-weight: 500;
 }
 
-.column__stack {
+.roadmark-scope .column__stack {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.column--empty .column__stack::after {
+.roadmark-scope .column--empty .column__stack::after {
   content: "No items";
   display: block;
   padding: 16px;
@@ -134,7 +134,7 @@ a:hover { text-decoration: underline; }
 }
 
 /* ── Card ───────────────────────────────────────────────────────────── */
-.card {
+.roadmark-scope .card {
   background: #161b22;
   border: 1px solid #30363d;
   border-radius: 6px;
@@ -142,11 +142,11 @@ a:hover { text-decoration: underline; }
   transition: border-color 0.15s ease;
 }
 
-.card:hover {
+.roadmark-scope .card:hover {
   border-color: #58a6ff;
 }
 
-.card__title {
+.roadmark-scope .card__title {
   font-size: 0.875rem;
   font-weight: 600;
   color: #e6edf3;
@@ -155,11 +155,11 @@ a:hover { text-decoration: underline; }
 }
 
 /* ── Objectives ─────────────────────────────────────────────────────── */
-.card__objectives {
+.roadmark-scope .card__objectives {
   margin-bottom: 10px;
 }
 
-.card__objectives-label {
+.roadmark-scope .card__objectives-label {
   font-size: 0.67rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -168,35 +168,35 @@ a:hover { text-decoration: underline; }
   margin-bottom: 5px;
 }
 
-.card__objectives-list {
+.roadmark-scope .card__objectives-list {
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: 3px;
 }
 
-.card__objectives-list li {
+.roadmark-scope .card__objectives-list li {
   font-size: 0.8rem;
   color: #8b949e;
   display: flex;
   gap: 6px;
 }
 
-.card__objectives-list li::before {
+.roadmark-scope .card__objectives-list li::before {
   content: "-";
   color: #3d444d;
   flex-shrink: 0;
 }
 
 /* ── Meta tags ──────────────────────────────────────────────────────── */
-.card__meta {
+.roadmark-scope .card__meta {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
   margin-top: 8px;
 }
 
-.card__tag {
+.roadmark-scope .card__tag {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -209,7 +209,7 @@ a:hover { text-decoration: underline; }
   font-weight: 500;
 }
 
-.card__tag-label {
+.roadmark-scope .card__tag-label {
   color: #6e7681;
   font-size: 0.65rem;
   font-weight: 600;
@@ -217,20 +217,20 @@ a:hover { text-decoration: underline; }
   letter-spacing: 0.04em;
 }
 
-.card__link {
+.roadmark-scope .card__link {
   margin-top: 8px;
 }
 
-.card__link a {
+.roadmark-scope .card__link a {
   font-size: 0.76rem;
   color: #58a6ff;
   text-decoration: none;
 }
 
-.card__link a:hover { text-decoration: underline; }
+.roadmark-scope .card__link a:hover { text-decoration: underline; }
 
 /* ── Footer ─────────────────────────────────────────────────────────── */
-.footer {
+.roadmark-scope .footer {
   background: #161b22;
   border-top: 1px solid #30363d;
   padding: 12px 24px;
@@ -241,14 +241,14 @@ a:hover { text-decoration: underline; }
   color: #3d444d;
 }
 
-.footer__brand {
+.roadmark-scope .footer__brand {
   font-weight: 600;
   color: #6e7681;
 }
 
 
 /* ── Roadmap summary ────────────────────────────────────────────────── */
-.roadmap__summary {
+.roadmark-scope .roadmap__summary {
   padding: 14px 24px;
   border-bottom: 1px solid #21262d;
   font-size: 0.9rem;
@@ -258,7 +258,7 @@ a:hover { text-decoration: underline; }
 }
 
 /* ── Card header (title + status row) ──────────────────────────────── */
-.card__header {
+.roadmark-scope .card__header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -266,10 +266,10 @@ a:hover { text-decoration: underline; }
   margin-bottom: 8px;
 }
 
-.card__header .card__title { margin-bottom: 0; flex: 1; }
+.roadmark-scope .card__header .card__title { margin-bottom: 0; flex: 1; }
 
 /* ── Card summary ───────────────────────────────────────────────────── */
-.card__summary {
+.roadmark-scope .card__summary {
   font-size: 0.8rem;
   color: #6e7681;
   line-height: 1.5;
@@ -277,7 +277,7 @@ a:hover { text-decoration: underline; }
 }
 
 /* ── Status badge ───────────────────────────────────────────────────── */
-.card__status {
+.roadmark-scope .card__status {
   display: inline-block;
   font-size: 0.6rem;
   font-weight: 700;
@@ -290,12 +290,12 @@ a:hover { text-decoration: underline; }
   margin-top: 2px;
 }
 
-.card__status--planned     { background: #21262d; color: #6e7681; border: 1px solid #30363d; }
-.card__status--in-progress { background: #0d2136; color: #58a6ff; border: 1px solid #1f4060; }
-.card__status--blocked     { background: #2d1212; color: #f85149; border: 1px solid #4a1818; }
-.card__status--in-review     { background: #0d2117; color: #3fb950; border: 1px solid #1a3d28; }
+.roadmark-scope .card__status--planned     { background: #21262d; color: #6e7681; border: 1px solid #30363d; }
+.roadmark-scope .card__status--in-progress { background: #0d2136; color: #58a6ff; border: 1px solid #1f4060; }
+.roadmark-scope .card__status--blocked     { background: #2d1212; color: #f85149; border: 1px solid #4a1818; }
+.roadmark-scope .card__status--in-review     { background: #0d2117; color: #3fb950; border: 1px solid #1a3d28; }
 
 /* ── Confidence tag variants ────────────────────────────────────────── */
-.card__tag--confidence-committed { background: #0d2136; border-color: #1f4060; color: #58a6ff; }
-.card__tag--confidence-likely    { background: #21262d; border-color: #30363d; color: #6e7681; }
-.card__tag--confidence-exploring { background: #161b22; border-color: #21262d; color: #3d444d; }
+.roadmark-scope .card__tag--confidence-committed { background: #0d2136; border-color: #1f4060; color: #58a6ff; }
+.roadmark-scope .card__tag--confidence-likely    { background: #21262d; border-color: #30363d; color: #6e7681; }
+.roadmark-scope .card__tag--confidence-exploring { background: #161b22; border-color: #21262d; color: #3d444d; }

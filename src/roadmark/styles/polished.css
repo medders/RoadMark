@@ -1,8 +1,8 @@
 /* Crisp white dashboard with indigo accents */
 /* ── Reset & base ───────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.roadmark-scope *, .roadmark-scope *::before, .roadmark-scope *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
+.roadmark-scope {
   font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
   background: #f6f9fc;
   color: #1a1f36;
@@ -11,24 +11,24 @@ body {
   flex-direction: column;
 }
 
-a { color: #5469d4; }
-a:hover { text-decoration: underline; }
+.roadmark-scope a { color: #5469d4; }
+.roadmark-scope a:hover { text-decoration: underline; }
 
 /* ── Header ─────────────────────────────────────────────────────────── */
-.header {
+.roadmark-scope .header {
   background: #ffffff;
   border-bottom: 1px solid #e3e8ee;
   padding: 20px 32px;
 }
 
-.header__title {
+.roadmark-scope .header__title {
   font-size: 1.3rem;
   font-weight: 700;
   color: #1a1f36;
   letter-spacing: -0.02em;
 }
 
-.header__meta {
+.roadmark-scope .header__meta {
   margin-top: 6px;
   display: flex;
   flex-wrap: wrap;
@@ -37,13 +37,13 @@ a:hover { text-decoration: underline; }
   color: #8792a2;
 }
 
-.header__meta-item {
+.roadmark-scope .header__meta-item {
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-.header__description {
+.roadmark-scope .header__description {
   margin-top: 6px;
   font-size: 0.875rem;
   color: #697386;
@@ -51,7 +51,7 @@ a:hover { text-decoration: underline; }
 }
 
 /* ── Board ──────────────────────────────────────────────────────────── */
-.board {
+.roadmark-scope .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
@@ -61,9 +61,9 @@ a:hover { text-decoration: underline; }
 }
 
 /* ── Column ─────────────────────────────────────────────────────────── */
-.column {}
+.roadmark-scope .column {}
 
-.column__header {
+.roadmark-scope .column__header {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -72,11 +72,11 @@ a:hover { text-decoration: underline; }
   border-bottom: 2px solid transparent;
 }
 
-.column--now .column__header    { border-color: #5469d4; }
-.column--next .column__header   { border-color: #1ea672; }
-.column--later .column__header  { border-color: #c8d0dc; }
+.roadmark-scope .column--now .column__header    { border-color: #5469d4; }
+.roadmark-scope .column--next .column__header   { border-color: #1ea672; }
+.roadmark-scope .column--later .column__header  { border-color: #c8d0dc; }
 
-.column__badge {
+.roadmark-scope .column__badge {
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -84,7 +84,7 @@ a:hover { text-decoration: underline; }
   color: #1a1f36;
 }
 
-.column__count {
+.roadmark-scope .column__count {
   font-size: 0.72rem;
   color: #8792a2;
   background: #f0f3f9;
@@ -93,13 +93,13 @@ a:hover { text-decoration: underline; }
   font-weight: 500;
 }
 
-.column__stack {
+.roadmark-scope .column__stack {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.column--empty .column__stack::after {
+.roadmark-scope .column--empty .column__stack::after {
   content: "Nothing here yet";
   display: block;
   padding: 20px;
@@ -111,7 +111,7 @@ a:hover { text-decoration: underline; }
 }
 
 /* ── Card ───────────────────────────────────────────────────────────── */
-.card {
+.roadmark-scope .card {
   background: #ffffff;
   border: 1px solid #e3e8ee;
   border-radius: 8px;
@@ -120,11 +120,11 @@ a:hover { text-decoration: underline; }
   transition: box-shadow 0.15s ease;
 }
 
-.card:hover {
+.roadmark-scope .card:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-.card__title {
+.roadmark-scope .card__title {
   font-size: 0.9rem;
   font-weight: 600;
   color: #1a1f36;
@@ -133,11 +133,11 @@ a:hover { text-decoration: underline; }
 }
 
 /* ── Objectives ─────────────────────────────────────────────────────── */
-.card__objectives {
+.roadmark-scope .card__objectives {
   margin-bottom: 10px;
 }
 
-.card__objectives-label {
+.roadmark-scope .card__objectives-label {
   font-size: 0.67rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -146,35 +146,35 @@ a:hover { text-decoration: underline; }
   margin-bottom: 5px;
 }
 
-.card__objectives-list {
+.roadmark-scope .card__objectives-list {
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: 3px;
 }
 
-.card__objectives-list li {
+.roadmark-scope .card__objectives-list li {
   font-size: 0.875rem;
   color: #4f566b;
   display: flex;
   gap: 7px;
 }
 
-.card__objectives-list li::before {
+.roadmark-scope .card__objectives-list li::before {
   content: "→";
   color: #c1c9d2;
   flex-shrink: 0;
 }
 
 /* ── Meta tags ──────────────────────────────────────────────────────── */
-.card__meta {
+.roadmark-scope .card__meta {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
   margin-top: 10px;
 }
 
-.card__tag {
+.roadmark-scope .card__tag {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -187,7 +187,7 @@ a:hover { text-decoration: underline; }
   font-weight: 500;
 }
 
-.card__tag-label {
+.roadmark-scope .card__tag-label {
   color: #a3acb9;
   font-size: 0.67rem;
   font-weight: 600;
@@ -195,21 +195,21 @@ a:hover { text-decoration: underline; }
   letter-spacing: 0.05em;
 }
 
-.card__link {
+.roadmark-scope .card__link {
   margin-top: 10px;
 }
 
-.card__link a {
+.roadmark-scope .card__link a {
   font-size: 0.78rem;
   color: #5469d4;
   text-decoration: none;
   font-weight: 500;
 }
 
-.card__link a:hover { text-decoration: underline; }
+.roadmark-scope .card__link a:hover { text-decoration: underline; }
 
 /* ── Footer ─────────────────────────────────────────────────────────── */
-.footer {
+.roadmark-scope .footer {
   background: #ffffff;
   border-top: 1px solid #e3e8ee;
   padding: 12px 32px;
@@ -220,14 +220,14 @@ a:hover { text-decoration: underline; }
   color: #a3acb9;
 }
 
-.footer__brand {
+.roadmark-scope .footer__brand {
   font-weight: 600;
   color: #8792a2;
 }
 
 
 /* ── Roadmap summary ────────────────────────────────────────────────── */
-.roadmap__summary {
+.roadmark-scope .roadmap__summary {
   padding: 14px 32px;
   border-bottom: 1px solid #e5e7eb;
   font-size: 0.925rem;
@@ -237,7 +237,7 @@ a:hover { text-decoration: underline; }
 }
 
 /* ── Card header (title + status row) ──────────────────────────────── */
-.card__header {
+.roadmark-scope .card__header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -245,10 +245,10 @@ a:hover { text-decoration: underline; }
   margin-bottom: 10px;
 }
 
-.card__header .card__title { margin-bottom: 0; flex: 1; }
+.roadmark-scope .card__header .card__title { margin-bottom: 0; flex: 1; }
 
 /* ── Card summary ───────────────────────────────────────────────────── */
-.card__summary {
+.roadmark-scope .card__summary {
   font-size: 0.85rem;
   color: #6b7280;
   line-height: 1.5;
@@ -256,7 +256,7 @@ a:hover { text-decoration: underline; }
 }
 
 /* ── Status badge ───────────────────────────────────────────────────── */
-.card__status {
+.roadmark-scope .card__status {
   display: inline-block;
   font-size: 0.62rem;
   font-weight: 700;
@@ -269,12 +269,12 @@ a:hover { text-decoration: underline; }
   margin-top: 2px;
 }
 
-.card__status--planned     { background: #f3f4f6; color: #6b7280; }
-.card__status--in-progress { background: #dbeafe; color: #1e40af; }
-.card__status--blocked     { background: #fee2e2; color: #991b1b; }
-.card__status--in-review     { background: #d1fae5; color: #065f46; }
+.roadmark-scope .card__status--planned     { background: #f3f4f6; color: #6b7280; }
+.roadmark-scope .card__status--in-progress { background: #dbeafe; color: #1e40af; }
+.roadmark-scope .card__status--blocked     { background: #fee2e2; color: #991b1b; }
+.roadmark-scope .card__status--in-review     { background: #d1fae5; color: #065f46; }
 
 /* ── Confidence tag variants ────────────────────────────────────────── */
-.card__tag--confidence-committed { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; }
-.card__tag--confidence-likely    { background: #f9fafb; border-color: #e5e7eb; color: #4b5563; }
-.card__tag--confidence-exploring { background: #fafafa; border-color: #f0f0f0; color: #9ca3af; }
+.roadmark-scope .card__tag--confidence-committed { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; }
+.roadmark-scope .card__tag--confidence-likely    { background: #f9fafb; border-color: #e5e7eb; color: #4b5563; }
+.roadmark-scope .card__tag--confidence-exploring { background: #fafafa; border-color: #f0f0f0; color: #9ca3af; }
