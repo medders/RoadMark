@@ -89,7 +89,7 @@ def _check_themes(roadmap: Roadmap, result: LintResult) -> None:
                     Issue(
                         Severity.WARNING,
                         loc,
-                        "Missing status field (planned/in-progress/blocked/done)",
+                        "Missing status field (planned/in-progress/blocked/in-review)",
                     )
                 )
 

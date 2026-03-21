@@ -120,7 +120,7 @@ Columns are defined by `##` headings. The three valid column names are `Now`, `N
 | Theme name (`###` heading) | Yes | Displayed as the card title |
 | `summary` | No | One-sentence description of the theme, shown below the title |
 | `objectives` | No | List of measurable outcomes, rendered as bullet points |
-| `status` | No | `planned`, `in-progress`, `blocked`, or `done` |
+| `status` | No | `planned`, `in-progress`, `blocked`, or `in-review` |
 | `confidence` | No | `committed`, `likely`, or `exploring` |
 | `target` | No | Target date or quarter (free-form, e.g. `Q2 2026`) |
 | `stakeholder` | No | Single stakeholder (shorthand for `stakeholders`) |

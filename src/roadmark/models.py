@@ -4,7 +4,7 @@ from typing import Literal
 
 from pydantic import BaseModel, HttpUrl
 
-StatusT = Literal["planned", "in-progress", "blocked", "done"]
+StatusT = Literal["planned", "in-progress", "blocked", "in-review"]
 ConfidenceT = Literal["committed", "likely", "exploring"]
 
 

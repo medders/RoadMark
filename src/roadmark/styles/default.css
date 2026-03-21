@@ -280,7 +280,7 @@ a:hover { text-decoration: underline; }
 .card__status--planned     { background: #f3f4f6; color: #6b7280; }
 .card__status--in-progress { background: #dbeafe; color: #1e40af; }
 .card__status--blocked     { background: #fee2e2; color: #991b1b; }
-.card__status--done     { background: #d1fae5; color: #065f46; }
+.card__status--in-review     { background: #d1fae5; color: #065f46; }
 
 /* ── Confidence tag variants ────────────────────────────────────────── */
 .card__tag--confidence-committed { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; }

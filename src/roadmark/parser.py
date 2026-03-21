@@ -11,7 +11,7 @@ from roadmark.models import Column, ConfidenceT, FrontMatter, Roadmap, StatusT, 
 
 VALID_COLUMNS = {"Now", "Next", "Later"}
 VALID_STATUSES: frozenset[StatusT] = frozenset(
-    {"planned", "in-progress", "blocked", "done"}
+    {"planned", "in-progress", "blocked", "in-review"}
 )
 VALID_CONFIDENCES: frozenset[ConfidenceT] = frozenset(
     {"committed", "likely", "exploring"}
