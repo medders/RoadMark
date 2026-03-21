@@ -53,7 +53,7 @@ def _parse_front_matter(metadata: dict[str, Any]) -> FrontMatter:
         for k, v in metadata.items()
     }
     try:
-        return FrontMatter(**coerced)
+        return FrontMatter.model_validate(coerced)
     except ValidationError as exc:
         errors = "; ".join(
             f"{' -> '.join(str(loc) for loc in e['loc'])}: {e['msg']}"
@@ -166,7 +166,7 @@ def _parse_theme_list(token: dict[str, Any], theme: Theme) -> None:
 def _extract_text(token: dict[str, Any]) -> str:
     """Recursively extract plain text from a token and its children."""
     if "raw" in token and not token.get("children"):
-        return token["raw"]
+        return str(token["raw"])
 
     result = ""
     for child in token.get("children") or []:

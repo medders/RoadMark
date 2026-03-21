@@ -22,6 +22,7 @@ dev = [
     "ruff>=0.9",
     "commitizen>=4.0",
     "pre-commit>=4.0",
+    "mypy>=1.19.1",
 ]
 
 [tool.ruff]
@@ -46,6 +47,11 @@ name = "cz_conventional_commits"
 version = "0.1.0"
 version_files = ["pyproject.toml:version"]
 tag_format = "v$version"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true
 
 [build-system]
 requires = ["uv_build>=0.9.13,<0.10.0"]
