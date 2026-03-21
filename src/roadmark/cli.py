@@ -93,7 +93,7 @@ def build(input_file: Path, output: Path | None, style: str) -> None:
         raise click.ClickException(str(exc)) from exc
 
     output.write_text(html, encoding="utf-8")
-    click.echo(f"Roadmap written to {output}")
+    click.echo(f"Roadmap written to {output} (style: {style})")
 
 
 @cli.command()
@@ -116,6 +116,7 @@ def init(output_file: Path) -> None:
     content = _INIT_TEMPLATE.format(today=today)
     output_file.write_text(content, encoding="utf-8")
     click.echo(f"Template roadmap written to {output_file}")
+    click.echo(f"Run 'roadmark build {output_file}' to generate HTML.")
 
 
 @cli.command()

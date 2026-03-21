@@ -1,12 +1,12 @@
 """Roadmap quality linter."""
 
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 
 from roadmark.models import Roadmap
 
 
-class Severity(str, Enum):
+class Severity(StrEnum):
     WARNING = "warning"
     ERROR = "error"
 
