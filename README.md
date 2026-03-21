@@ -187,11 +187,3 @@ This project uses [Conventional Commits](https://www.conventionalcommits.org/) e
 ```bash
 cz commit
 ```
-
----
-
-## Roadmap for RoadMark
-
-- [ ] Confluence wiki markup export
-- [ ] Image (PNG/SVG) export
-- [ ] Additional themes and colour schemes
