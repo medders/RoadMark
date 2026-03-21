@@ -232,3 +232,57 @@ a:hover { text-decoration: underline; }
   font-weight: 600;
   color: #6b7280;
 }
+
+/* ── Roadmap summary ────────────────────────────────────────────────── */
+.roadmap__summary {
+  padding: 14px 36px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e4ea;
+  font-size: 0.925rem;
+  color: #4b5563;
+  line-height: 1.6;
+  max-width: 860px;
+}
+
+/* ── Card header (title + status row) ──────────────────────────────── */
+.card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.card__header .card__title { margin-bottom: 0; flex: 1; }
+
+/* ── Card summary ───────────────────────────────────────────────────── */
+.card__summary {
+  font-size: 0.85rem;
+  color: #6b7280;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+/* ── Status badge ───────────────────────────────────────────────────── */
+.card__status {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.card__status--planned     { background: #f3f4f6; color: #6b7280; }
+.card__status--in-progress { background: #dbeafe; color: #1e40af; }
+.card__status--blocked     { background: #fee2e2; color: #991b1b; }
+.card__status--shipped     { background: #d1fae5; color: #065f46; }
+
+/* ── Confidence tag variants ────────────────────────────────────────── */
+.card__tag--confidence-committed { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; }
+.card__tag--confidence-likely    { background: #f9fafb; border-color: #e5e7eb; color: #4b5563; }
+.card__tag--confidence-exploring { background: #fafafa; border-color: #f0f0f0; color: #9ca3af; }

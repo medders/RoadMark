@@ -42,6 +42,10 @@
     {% endif %}
   </header>
 
+  {% if fm.summary %}
+  <div class="roadmap__summary">{{ fm.summary }}</div>
+  {% endif %}
+
   <!-- Board -->
   <main class="board">
     {% for column in roadmap.columns %}
@@ -57,15 +61,24 @@
 
       <div class="column__stack">
         {% for theme in column.themes %}
-        <article class="card">
+        <article class="card{% if theme.status %} card--status-{{ theme.status }}{% endif %}">
 
-          <h3 class="card__title">
-            {% if theme.link %}
-            <a href="{{ theme.link }}" target="_blank" rel="noopener">{{ theme.name }}</a>
-            {% else %}
-            {{ theme.name }}
+          <div class="card__header">
+            <h3 class="card__title">
+              {% if theme.link %}
+              <a href="{{ theme.link }}" target="_blank" rel="noopener">{{ theme.name }}</a>
+              {% else %}
+              {{ theme.name }}
+              {% endif %}
+            </h3>
+            {% if theme.status %}
+            <span class="card__status card__status--{{ theme.status }}">{{ theme.status }}</span>
             {% endif %}
-          </h3>
+          </div>
+
+          {% if theme.summary %}
+          <p class="card__summary">{{ theme.summary }}</p>
+          {% endif %}
 
           {% if theme.objectives %}
           <div class="card__objectives">
@@ -78,7 +91,7 @@
           </div>
           {% endif %}
 
-          {% if theme.stakeholders or theme.components %}
+          {% if theme.stakeholders or theme.components or theme.target or theme.confidence %}
           <div class="card__meta">
             {% for stakeholder in theme.stakeholders %}
             <span class="card__tag">
@@ -92,6 +105,18 @@
               {{ component }}
             </span>
             {% endfor %}
+            {% if theme.target %}
+            <span class="card__tag card__tag--target">
+              <span class="card__tag-label">Target</span>
+              {{ theme.target }}
+            </span>
+            {% endif %}
+            {% if theme.confidence %}
+            <span class="card__tag card__tag--confidence card__tag--confidence-{{ theme.confidence }}">
+              <span class="card__tag-label">Confidence</span>
+              {{ theme.confidence }}
+            </span>
+            {% endif %}
           </div>
           {% endif %}
 
