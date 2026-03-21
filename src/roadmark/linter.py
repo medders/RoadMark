@@ -104,11 +104,11 @@ def _check_themes(roadmap: Roadmap, result: LintResult) -> None:
                         )
                     )
 
-            if column.name.lower() == "now" and theme.confidence is None:
+            if column.name.lower() in ("now", "next") and theme.confidence is None:
                 result.issues.append(
                     Issue(
                         Severity.WARNING,
                         loc,
-                        "Active theme is missing a confidence level",
+                        "Theme is missing a confidence level",
                     )
                 )

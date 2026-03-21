@@ -114,6 +114,18 @@ class TestThemeChecks:
         result = lint(roadmap)
         assert any("confidence" in i.message for i in result.warnings)
 
+    def test_next_theme_missing_confidence_warns(self) -> None:
+        theme = Theme(name="T", objectives=["obj"], status="planned")
+        roadmap = _make_roadmap(
+            columns=[
+                Column(name="Now"),
+                Column(name="Next", themes=[theme]),
+                Column(name="Later"),
+            ]
+        )
+        result = lint(roadmap)
+        assert any("confidence" in i.message for i in result.warnings)
+
     def test_later_theme_missing_confidence_does_not_warn(self) -> None:
         theme = Theme(name="T", objectives=["obj"], status="planned")
         roadmap = _make_roadmap(
