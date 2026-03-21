@@ -300,7 +300,7 @@ a:hover { text-decoration: underline; }
 .card__status--planned     { background: #21262d; color: #6e7681; border: 1px solid #30363d; }
 .card__status--in-progress { background: #0d2136; color: #58a6ff; border: 1px solid #1f4060; }
 .card__status--blocked     { background: #2d1212; color: #f85149; border: 1px solid #4a1818; }
-.card__status--shipped     { background: #0d2117; color: #3fb950; border: 1px solid #1a3d28; }
+.card__status--done     { background: #0d2117; color: #3fb950; border: 1px solid #1a3d28; }
 
 /* ── Confidence tag variants ────────────────────────────────────────── */
 .card__tag--confidence-committed { background: #0d2136; border-color: #1f4060; color: #58a6ff; }

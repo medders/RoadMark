@@ -4,6 +4,7 @@ from pathlib import Path
 
 import click
 
+from roadmark.linter import Severity, lint
 from roadmark.parser import ParseError, parse_file
 from roadmark.renderer import DEFAULT_STYLE, list_styles, render
 
@@ -115,3 +116,45 @@ def init(output_file: Path) -> None:
     content = _INIT_TEMPLATE.format(today=today)
     output_file.write_text(content, encoding="utf-8")
     click.echo(f"Template roadmap written to {output_file}")
+
+
+@cli.command()
+@click.argument(
+    "input_file", type=click.Path(exists=True, dir_okay=False, path_type=Path)
+)
+@click.option(
+    "--strict",
+    is_flag=True,
+    default=False,
+    help="Exit with a non-zero code if any warnings are found.",
+)
+def lint_cmd(input_file: Path, strict: bool) -> None:
+    """Check INPUT_FILE for roadmap quality issues."""
+    try:
+        roadmap = parse_file(input_file)
+    except ParseError as exc:
+        raise click.ClickException(str(exc)) from exc
+
+    result = lint(roadmap)
+
+    if not result.issues:
+        click.echo(click.style("No issues found.", fg="green"))
+        return
+
+    for issue in result.issues:
+        if issue.severity == Severity.ERROR:
+            click.echo(click.style(str(issue), fg="red"))
+        else:
+            click.echo(click.style(str(issue), fg="yellow"))
+
+    n_errors = len(result.errors)
+    n_warnings = len(result.warnings)
+    summary = f"{n_errors} error(s), {n_warnings} warning(s)"
+
+    if not result.ok:
+        raise click.ClickException(summary)
+
+    if strict and n_warnings:
+        raise click.ClickException(summary)
+
+    click.echo(summary)
