@@ -1,0 +1,227 @@
+/* Pure black high-contrast theme */
+/* ── Reset & base ───────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+  background: #000000;
+  color: #ededed;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a { color: #ededed; }
+a:hover { text-decoration: underline; }
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+.header {
+  border-bottom: 1px solid #333333;
+  padding: 24px 40px;
+}
+
+.header__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ededed;
+  letter-spacing: -0.04em;
+}
+
+.header__meta {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 0.78rem;
+  color: #666666;
+}
+
+.header__meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.header__description {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: #888888;
+  max-width: 560px;
+}
+
+/* ── Board ──────────────────────────────────────────────────────────── */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: #333333;
+  flex: 1;
+  align-items: start;
+}
+
+/* ── Column ─────────────────────────────────────────────────────────── */
+.column {
+  background: #000000;
+  padding: 24px;
+}
+
+.column__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.column__badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #ededed;
+}
+
+.column--now .column__badge    { color: #ffffff; }
+.column--next .column__badge   { color: #888888; }
+.column--later .column__badge  { color: #555555; }
+
+.column__count {
+  font-size: 0.7rem;
+  color: #444444;
+  background: #111111;
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+
+.column__stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.column--empty .column__stack::after {
+  content: "Empty";
+  display: block;
+  padding: 20px 0;
+  font-size: 0.78rem;
+  color: #333333;
+}
+
+/* ── Card ───────────────────────────────────────────────────────────── */
+.card {
+  background: #111111;
+  border: 1px solid #222222;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 1px;
+  transition: border-color 0.15s ease;
+}
+
+.card:hover {
+  border-color: #444444;
+}
+
+.card__title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #ededed;
+  line-height: 1.5;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.card__title a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card__title a:hover { color: #ffffff; }
+
+/* ── Objectives ─────────────────────────────────────────────────────── */
+.card__objectives {
+  margin-bottom: 10px;
+}
+
+.card__objectives-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #555555;
+  margin-bottom: 5px;
+}
+
+.card__objectives-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.card__objectives-list li {
+  font-size: 0.78rem;
+  color: #888888;
+  display: flex;
+  gap: 7px;
+}
+
+.card__objectives-list li::before {
+  content: "/";
+  color: #333333;
+  flex-shrink: 0;
+}
+
+/* ── Meta tags ──────────────────────────────────────────────────────── */
+.card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.card__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: #1a1a1a;
+  border: 1px solid #333333;
+  color: #888888;
+}
+
+.card__tag-label {
+  color: #444444;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.card__link {
+  margin-top: 10px;
+}
+
+.card__link a {
+  font-size: 0.76rem;
+  color: #888888;
+  text-decoration: none;
+}
+
+.card__link a:hover { color: #ededed; }
+
+/* ── Footer ─────────────────────────────────────────────────────────── */
+.footer {
+  border-top: 1px solid #333333;
+  padding: 14px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.72rem;
+  color: #444444;
+}
+
+.footer__brand {
+  font-weight: 600;
+  color: #555555;
+}

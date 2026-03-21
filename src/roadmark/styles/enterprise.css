@@ -1,0 +1,231 @@
+/* Blue-header board layout for enterprise contexts */
+/* ── Reset & base ───────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f4f5f7;
+  color: #172b4d;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a { color: #0052cc; }
+a:hover { text-decoration: underline; }
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+.header {
+  background: #0052cc;
+  padding: 18px 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.header__meta {
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.7);
+}
+
+.header__meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.header__meta-item a { color: rgba(255,255,255,0.9); }
+
+.header__description {
+  margin-top: 4px;
+  font-size: 0.84rem;
+  color: rgba(255,255,255,0.8);
+  max-width: 620px;
+}
+
+/* ── Board ──────────────────────────────────────────────────────────── */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 20px 24px;
+  flex: 1;
+  align-items: start;
+}
+
+/* ── Column ─────────────────────────────────────────────────────────── */
+.column {
+  background: #ebecf0;
+  border-radius: 3px;
+  padding: 8px;
+}
+
+.column__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 4px 6px;
+}
+
+.column__badge {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #172b4d;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.column__count {
+  font-size: 0.72rem;
+  color: #6b778c;
+  background: #dfe1e6;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.column__stack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.column--empty .column__stack::after {
+  content: "No cards in this column";
+  display: block;
+  padding: 16px;
+  font-size: 0.8rem;
+  color: #a5adba;
+  text-align: center;
+}
+
+/* ── Card ───────────────────────────────────────────────────────────── */
+.card {
+  background: #ffffff;
+  border-radius: 3px;
+  padding: 10px 12px;
+  box-shadow: 0 1px 0 rgba(9,30,66,0.25);
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+
+.card:hover {
+  background: #f4f5f7;
+}
+
+.card__title {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #172b4d;
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+
+.card__title a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card__title a:hover { color: #0052cc; }
+
+/* ── Objectives ─────────────────────────────────────────────────────── */
+.card__objectives {
+  margin-bottom: 8px;
+}
+
+.card__objectives-label {
+  font-size: 0.67rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b778c;
+  margin-bottom: 4px;
+}
+
+.card__objectives-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.card__objectives-list li {
+  font-size: 0.78rem;
+  color: #5e6c84;
+  display: flex;
+  gap: 6px;
+}
+
+.card__objectives-list li::before {
+  content: "•";
+  color: #b3bac5;
+  flex-shrink: 0;
+}
+
+/* ── Meta tags ──────────────────────────────────────────────────────── */
+.card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.card__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 3px;
+  background: #dfe1e6;
+  color: #172b4d;
+  font-weight: 500;
+}
+
+.card__tag-label {
+  color: #6b778c;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.card__link {
+  margin-top: 8px;
+}
+
+.card__link a {
+  font-size: 0.76rem;
+  color: #0052cc;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.card__link a:hover { text-decoration: underline; }
+
+/* ── Footer ─────────────────────────────────────────────────────────── */
+.footer {
+  background: #ffffff;
+  border-top: 1px solid #dfe1e6;
+  padding: 10px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.74rem;
+  color: #a5adba;
+}
+
+.footer__brand {
+  font-weight: 600;
+  color: #6b778c;
+}
