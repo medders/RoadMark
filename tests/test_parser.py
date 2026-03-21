@@ -49,6 +49,20 @@ class TestColumns:
         roadmap = parse_file(md)
         assert len(roadmap.columns) == 1
 
+    def test_columns_always_in_canonical_order(self, tmp_path: Path) -> None:
+        md = tmp_path / "reversed.md"
+        md.write_text(
+            "---\ntitle: T\n---\n\n"
+            "## Later\n\n### C\n\n"
+            "## Next\n\n### B\n\n"
+            "## Now\n\n### A\n"
+        )
+        roadmap = parse_file(md)
+        assert [c.name for c in roadmap.columns] == ["Now", "Next", "Later"]
+        assert roadmap.columns[0].themes[0].name == "A"
+        assert roadmap.columns[1].themes[0].name == "B"
+        assert roadmap.columns[2].themes[0].name == "C"
+
     def test_unrecognised_column_heading_raises(self, tmp_path: Path) -> None:
         md = tmp_path / "bad_heading.md"
         md.write_text(

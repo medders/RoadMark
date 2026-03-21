@@ -10,6 +10,7 @@ from pydantic import ValidationError
 from roadmark.models import Column, ConfidenceT, FrontMatter, Roadmap, StatusT, Theme
 
 VALID_COLUMNS = {"Now", "Next", "Later"}
+COLUMN_ORDER = ["Now", "Next", "Later"]
 VALID_STATUSES: frozenset[StatusT] = frozenset(
     {"planned", "in-progress", "blocked", "in-review"}
 )
@@ -102,6 +103,7 @@ def _parse_body(content: str) -> list[Column]:
         elif token_type == "list" and current_theme is not None:
             _parse_theme_list(token, current_theme)
 
+    columns.sort(key=lambda c: COLUMN_ORDER.index(c.name))
     return columns
 
 
