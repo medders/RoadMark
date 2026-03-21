@@ -62,10 +62,16 @@ class TestThemes:
         roadmap = parse_file(FIXTURES / "full_example.md")
         gateway = roadmap.columns[0].themes[0]
         assert gateway.name == "API Gateway Upgrade"
-        assert gateway.objectives == ["Improve throughput by 30%", "Reduce p99 latency"]
+        assert gateway.objectives == [
+            "Improve throughput by 30%",
+            "Reduce p99 latency below 50 ms",
+        ]
         assert gateway.stakeholders == ["CTO", "Head of Engineering"]
         assert gateway.components == ["API", "Gateway"]
         assert str(gateway.link) == "https://jira.example.com/epic/101"
+        assert gateway.status == "in-progress"
+        assert gateway.confidence == "committed"
+        assert gateway.target == "Q2 2026"
 
     def test_singular_shorthand(self) -> None:
         roadmap = parse_file(FIXTURES / "full_example.md")
