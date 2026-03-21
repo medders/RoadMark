@@ -63,3 +63,48 @@ class TestBuildCommand:
         result = runner.invoke(cli, ["build", str(input_file)])
         assert result.exit_code == 0
         assert (tmp_path / "my_roadmap.html").exists()
+
+
+class TestInitCommand:
+    def test_init_creates_file(self, tmp_path: Path) -> None:
+        runner = CliRunner()
+        output = tmp_path / "roadmap.md"
+        result = runner.invoke(cli, ["init", str(output)])
+        assert result.exit_code == 0
+        assert output.exists()
+        assert "Template roadmap written to" in result.output
+
+    def test_init_file_is_parseable(self, tmp_path: Path) -> None:
+        """The generated template should parse without error."""
+        from roadmark.parser import parse_file
+
+        runner = CliRunner()
+        output = tmp_path / "roadmap.md"
+        runner.invoke(cli, ["init", str(output)])
+        roadmap = parse_file(output)
+        assert roadmap.front_matter.title == "My Product Roadmap"
+        assert len(roadmap.columns) == 3
+
+    def test_init_contains_all_columns(self, tmp_path: Path) -> None:
+        runner = CliRunner()
+        output = tmp_path / "roadmap.md"
+        runner.invoke(cli, ["init", str(output)])
+        content = output.read_text()
+        assert "## Now" in content
+        assert "## Next" in content
+        assert "## Later" in content
+
+    def test_init_refuses_to_overwrite(self, tmp_path: Path) -> None:
+        runner = CliRunner()
+        output = tmp_path / "roadmap.md"
+        output.write_text("existing content")
+        result = runner.invoke(cli, ["init", str(output)])
+        assert result.exit_code != 0
+        assert "already exists" in result.output
+
+    def test_init_default_filename(self, tmp_path: Path) -> None:
+        runner = CliRunner()
+        with runner.isolated_filesystem(temp_dir=tmp_path):
+            result = runner.invoke(cli, ["init"])
+            assert result.exit_code == 0
+            assert Path("roadmap.md").exists()

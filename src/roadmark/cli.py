@@ -7,6 +7,51 @@ import click
 from roadmark.parser import ParseError, parse_file
 from roadmark.renderer import DEFAULT_STYLE, list_styles, render
 
+_INIT_TEMPLATE = """\
+---
+title: My Product Roadmap
+description: One-line description shown beneath the title
+owner: Your Name
+team: Platform Team
+team_link: https://example.com/team
+last_updated: {today}
+summary: |
+  A paragraph of free-form context for stakeholders — why this roadmap
+  exists, what the current quarter focus is, or any important caveats.
+---
+
+## Now
+
+### Theme Name
+- summary: One sentence describing what this theme is about.
+- objectives:
+  - First measurable outcome
+  - Second measurable outcome
+- status: in-progress
+- confidence: committed
+- target: Q2 2026
+- stakeholder: Jane Doe
+- component: API
+- link: https://example.com/epic/123
+
+## Next
+
+### Another Theme
+- objectives:
+  - Outcome to achieve
+- status: planned
+- confidence: likely
+- target: Q3 2026
+
+## Later
+
+### Future Theme
+- objectives:
+  - Long-horizon outcome
+- status: planned
+- confidence: exploring
+"""
+
 
 @click.group()
 def cli() -> None:
@@ -48,3 +93,25 @@ def build(input_file: Path, output: Path | None, style: str) -> None:
 
     output.write_text(html, encoding="utf-8")
     click.echo(f"Roadmap written to {output}")
+
+
+@cli.command()
+@click.argument(
+    "output_file",
+    type=click.Path(dir_okay=False, path_type=Path),
+    default="roadmap.md",
+)
+def init(output_file: Path) -> None:
+    """Create a template roadmap markdown file at OUTPUT_FILE.
+
+    Defaults to roadmap.md in the current directory.
+    """
+    import datetime
+
+    if output_file.exists():
+        raise click.ClickException(f"{output_file} already exists. Remove it first.")
+
+    today = datetime.date.today().isoformat()
+    content = _INIT_TEMPLATE.format(today=today)
+    output_file.write_text(content, encoding="utf-8")
+    click.echo(f"Template roadmap written to {output_file}")
