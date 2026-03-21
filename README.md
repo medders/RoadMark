@@ -26,6 +26,20 @@ uv run roadmark build my-roadmap.md
 
 ## Usage
 
+### Create a template
+
+```bash
+roadmark init
+```
+
+Generates a `roadmap.md` file in the current directory with all supported fields pre-populated and ready to edit. Pass a filename to write elsewhere:
+
+```bash
+roadmark init my-roadmap.md
+```
+
+### Build
+
 ```bash
 roadmark build my-roadmap.md
 ```
