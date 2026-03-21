@@ -5,6 +5,7 @@ from typing import Any
 
 import frontmatter
 import mistune
+from pydantic import ValidationError
 
 from roadmark.models import Column, FrontMatter, Roadmap, Theme
 
@@ -51,7 +52,14 @@ def _parse_front_matter(metadata: dict[str, Any]) -> FrontMatter:
         k: str(v) if k == "last_updated" and v is not None else v
         for k, v in metadata.items()
     }
-    return FrontMatter(**coerced)
+    try:
+        return FrontMatter(**coerced)
+    except ValidationError as exc:
+        errors = "; ".join(
+            f"{' -> '.join(str(loc) for loc in e['loc'])}: {e['msg']}"
+            for e in exc.errors()
+        )
+        raise ParseError(f"Invalid frontmatter: {errors}") from exc
 
 
 def _parse_body(content: str) -> list[Column]:
