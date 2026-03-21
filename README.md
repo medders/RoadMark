@@ -108,6 +108,12 @@ The `link` field is product-agnostic — paste any URL. It is rendered as a "Vie
 
 ## Full example
 
+See the [`examples/`](examples/) directory for ready-to-use roadmap files.
+
+```bash
+roadmark build examples/full_example.md
+```
+
 ```markdown
 ---
 title: Platform Roadmap
