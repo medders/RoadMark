@@ -8,16 +8,18 @@ RoadMark takes a structured `.md` file and outputs a self-contained HTML page â€
 
 ## Installation
 
-Requires Python 3.11+. Install with [uv](https://docs.astral.sh/uv/):
+Requires Python 3.11+. Clone the repo and install with [uv](https://docs.astral.sh/uv/):
 
 ```bash
-uv tool install roadmark
+git clone https://github.com/medders/RoadMark.git
+cd RoadMark
+uv tool install .
 ```
 
-Or install into a project:
+Or run without installing:
 
 ```bash
-uv add roadmark
+uv run roadmark build my-roadmap.md
 ```
 
 ---
