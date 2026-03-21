@@ -6,7 +6,7 @@
                "Helvetica Neue", Arial, sans-serif;
   background: #ffffff;
   color: #111111;
-  min-height: 100vh;
+
   display: flex;
   flex-direction: column;
 }
@@ -55,7 +55,6 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 0;
   padding: 0;
-  flex: 1;
   align-items: start;
   border-bottom: 1px solid #e0e0e0;
 }

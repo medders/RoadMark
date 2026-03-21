@@ -7,7 +7,7 @@
                Helvetica, Arial, sans-serif;
   background: #0d1117;
   color: #e6edf3;
-  min-height: 100vh;
+
   display: flex;
   flex-direction: column;
 }
@@ -56,7 +56,6 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
   padding: 20px 24px;
-  flex: 1;
   align-items: start;
 }
 
