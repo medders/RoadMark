@@ -55,7 +55,7 @@ a:hover { text-decoration: underline; }
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  padding: 24px 32px;
+  padding: 28px 32px;
   flex: 1;
   align-items: start;
 }
@@ -74,7 +74,7 @@ a:hover { text-decoration: underline; }
 
 .column--now .column__header    { border-color: #5469d4; }
 .column--next .column__header   { border-color: #1ea672; }
-.column--later .column__header  { border-color: #e3e8ee; }
+.column--later .column__header  { border-color: #c8d0dc; }
 
 .column__badge {
   font-size: 0.72rem;
@@ -161,7 +161,7 @@ a:hover { text-decoration: underline; }
 }
 
 .card__objectives-list li {
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   color: #4f566b;
   display: flex;
   gap: 7px;

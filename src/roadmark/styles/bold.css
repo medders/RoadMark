@@ -22,7 +22,7 @@ a:hover { text-decoration: underline; }
 }
 
 .header__title {
-  font-size: 2rem;
+  font-size: 1.85rem;
   font-weight: 800;
   color: #f1f5f9;
   letter-spacing: -0.03em;
@@ -161,6 +161,7 @@ a:hover { text-decoration: underline; }
 .card__objectives-list li {
   font-size: 0.85rem;
   color: #cbd5e1;
+  line-height: 1.5;
   display: flex;
   gap: 8px;
 }

@@ -45,7 +45,7 @@ a:hover { text-decoration: underline; }
 
 .header__description {
   margin-top: 10px;
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: #6b5a50;
   max-width: 680px;
   font-style: italic;
@@ -55,8 +55,8 @@ a:hover { text-decoration: underline; }
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  padding: 28px 36px;
+  gap: 16px;
+  padding: 32px 40px;
   flex: 1;
   align-items: start;
 }
@@ -159,17 +159,15 @@ a:hover { text-decoration: underline; }
 }
 
 .card__objectives-list li {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   color: #6b5a50;
   display: flex;
   gap: 8px;
 }
 
 .card__objectives-list li::before {
-  content: "✦";
+  content: "–";
   color: #d4a090;
-  font-size: 0.6rem;
-  margin-top: 3px;
   flex-shrink: 0;
 }
 

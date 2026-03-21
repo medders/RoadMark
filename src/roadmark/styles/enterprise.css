@@ -72,7 +72,7 @@ a:hover { text-decoration: underline; }
 .column__header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 10px;
   margin-bottom: 10px;
   padding: 4px 6px;
 }
@@ -98,6 +98,7 @@ a:hover { text-decoration: underline; }
   display: flex;
   flex-direction: column;
   gap: 6px;
+  padding-top: 4px;
 }
 
 .column--empty .column__stack::after {

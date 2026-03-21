@@ -16,7 +16,7 @@ a:hover { text-decoration: underline; }
 
 /* ── Header ─────────────────────────────────────────────────────────── */
 .header {
-  background: #ffffff;
+  background: #fafafa;
   border-bottom: 1px solid #e2e4ea;
   padding: 24px 32px;
 }
@@ -55,8 +55,9 @@ a:hover { text-decoration: underline; }
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0;
+  padding: 24px 32px;
   flex: 1;
-  align-items: stretch;
+  align-items: start;
 }
 
 /* ── Column ─────────────────────────────────────────────────────────── */
@@ -64,9 +65,9 @@ a:hover { text-decoration: underline; }
   padding: 28px 24px;
 }
 
-.column--now  { background: #ecfdf5; border-right: 1px solid #a7f3d0; }
+.column--now  { background: #f0fdf8; border-right: 1px solid #a7f3d0; }
 .column--next { background: #eff6ff; border-right: 1px solid #bfdbfe; }
-.column--later { background: #fffbeb; }
+.column--later { background: #fffcf0; }
 
 .column__header {
   display: flex;
@@ -92,7 +93,7 @@ a:hover { text-decoration: underline; }
 
 .column--now .column__badge   { background: #059669; color: #ffffff; }
 .column--next .column__badge  { background: #2563eb; color: #ffffff; }
-.column--later .column__badge { background: #d97706; color: #ffffff; }
+.column--later .column__badge { background: #f59e0b; color: #ffffff; }
 
 .column__count {
   font-size: 0.8rem;
@@ -123,6 +124,7 @@ a:hover { text-decoration: underline; }
   background: #ffffff;
   border-radius: 10px;
   padding: 18px 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: box-shadow 0.15s ease;
 }
 
