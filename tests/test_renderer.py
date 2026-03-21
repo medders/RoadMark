@@ -48,11 +48,13 @@ class TestRender:
         assert "Improve throughput by 30%" in html
         assert "Reduce p99 latency" in html
 
-    def test_stakeholder_and_component_rendered(self) -> None:
+    def test_stakeholders_and_components_rendered(self) -> None:
         roadmap = parse_file(FIXTURES / "full_example.md")
         html = render(roadmap)
         assert "CTO" in html
+        assert "Head of Engineering" in html
         assert "API" in html
+        assert "Gateway" in html
 
     def test_link_rendered(self) -> None:
         roadmap = parse_file(FIXTURES / "full_example.md")

@@ -78,20 +78,20 @@
           </div>
           {% endif %}
 
-          {% if theme.stakeholder or theme.component %}
+          {% if theme.stakeholders or theme.components %}
           <div class="card__meta">
-            {% if theme.stakeholder %}
+            {% for stakeholder in theme.stakeholders %}
             <span class="card__tag">
               <span class="card__tag-label">Stakeholder</span>
-              {{ theme.stakeholder }}
+              {{ stakeholder }}
             </span>
-            {% endif %}
-            {% if theme.component %}
+            {% endfor %}
+            {% for component in theme.components %}
             <span class="card__tag">
               <span class="card__tag-label">Component</span>
-              {{ theme.component }}
+              {{ component }}
             </span>
-            {% endif %}
+            {% endfor %}
           </div>
           {% endif %}
 

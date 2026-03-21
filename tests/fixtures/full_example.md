@@ -13,8 +13,12 @@ last_updated: 2026-03-21
 - objectives:
   - Improve throughput by 30%
   - Reduce p99 latency
-- stakeholder: CTO
-- component: API
+- stakeholders:
+  - CTO
+  - Head of Engineering
+- components:
+  - API
+  - Gateway
 - link: https://jira.example.com/epic/101
 
 ### Auth Refactor

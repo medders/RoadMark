@@ -127,15 +127,35 @@ def _parse_theme_list(token: dict[str, Any], theme: Theme) -> None:
                             if obj_text:
                                 theme.objectives.append(obj_text)
 
+        elif raw_text.lower().startswith("stakeholders:"):
+            # Plural form: expects a nested list
+            for child in item_children[1:]:
+                if child.get("type") == "list":
+                    for sub_item in child.get("children", []):
+                        value = _extract_text(sub_item).strip()
+                        if value:
+                            theme.stakeholders.append(value)
+
         elif raw_text.lower().startswith("stakeholder:"):
+            # Singular shorthand: inline single value
             value = raw_text[len("stakeholder:") :].strip()
             if value:
-                theme.stakeholder = value
+                theme.stakeholders.append(value)
+
+        elif raw_text.lower().startswith("components:"):
+            # Plural form: expects a nested list
+            for child in item_children[1:]:
+                if child.get("type") == "list":
+                    for sub_item in child.get("children", []):
+                        value = _extract_text(sub_item).strip()
+                        if value:
+                            theme.components.append(value)
 
         elif raw_text.lower().startswith("component:"):
+            # Singular shorthand: inline single value
             value = raw_text[len("component:") :].strip()
             if value:
-                theme.component = value
+                theme.components.append(value)
 
         elif raw_text.lower().startswith("link:"):
             value = raw_text[len("link:") :].strip()

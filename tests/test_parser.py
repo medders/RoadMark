@@ -60,29 +60,51 @@ class TestThemes:
 
     def test_full_theme_fields(self) -> None:
         roadmap = parse_file(FIXTURES / "full_example.md")
-        now_themes = roadmap.columns[0].themes
-        gateway = now_themes[0]
+        gateway = roadmap.columns[0].themes[0]
         assert gateway.name == "API Gateway Upgrade"
         assert gateway.objectives == ["Improve throughput by 30%", "Reduce p99 latency"]
-        assert gateway.stakeholder == "CTO"
-        assert gateway.component == "API"
+        assert gateway.stakeholders == ["CTO", "Head of Engineering"]
+        assert gateway.components == ["API", "Gateway"]
         assert str(gateway.link) == "https://jira.example.com/epic/101"
 
-    def test_optional_fields_default_to_none(self) -> None:
+    def test_singular_shorthand(self) -> None:
+        roadmap = parse_file(FIXTURES / "full_example.md")
+        auth = roadmap.columns[0].themes[1]
+        assert auth.name == "Auth Refactor"
+        assert auth.stakeholders == ["Security Lead"]
+        assert auth.components == ["Auth"]
+
+    def test_optional_fields_default_to_empty(self) -> None:
         roadmap = parse_file(FIXTURES / "simple.md")
         theme = roadmap.columns[0].themes[0]
         assert theme.objectives == []
-        assert theme.stakeholder is None
-        assert theme.component is None
+        assert theme.stakeholders == []
+        assert theme.components == []
         assert theme.link is None
 
     def test_theme_without_link(self) -> None:
         roadmap = parse_file(FIXTURES / "full_example.md")
         auth = roadmap.columns[0].themes[1]
-        assert auth.name == "Auth Refactor"
-        assert auth.stakeholder == "Security Lead"
         assert auth.link is None
 
     def test_multiple_themes_per_column(self) -> None:
         roadmap = parse_file(FIXTURES / "full_example.md")
         assert len(roadmap.columns[0].themes) == 2
+
+    def test_multiple_stakeholders_via_list(self, tmp_path: Path) -> None:
+        md = tmp_path / "multi.md"
+        md.write_text(
+            "---\ntitle: T\n---\n\n## Now\n\n### Theme\n"
+            "- stakeholders:\n  - Alice\n  - Bob\n"
+        )
+        roadmap = parse_file(md)
+        assert roadmap.columns[0].themes[0].stakeholders == ["Alice", "Bob"]
+
+    def test_multiple_components_via_list(self, tmp_path: Path) -> None:
+        md = tmp_path / "multi.md"
+        md.write_text(
+            "---\ntitle: T\n---\n\n## Now\n\n### Theme\n"
+            "- components:\n  - API\n  - Auth\n"
+        )
+        roadmap = parse_file(md)
+        assert roadmap.columns[0].themes[0].components == ["API", "Auth"]

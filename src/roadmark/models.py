@@ -19,8 +19,8 @@ class Theme(BaseModel):
 
     name: str
     objectives: list[str] = []
-    stakeholder: str | None = None
-    component: str | None = None
+    stakeholders: list[str] = []
+    components: list[str] = []
     link: HttpUrl | None = None
 
 
