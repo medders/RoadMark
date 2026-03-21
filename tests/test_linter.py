@@ -126,6 +126,30 @@ class TestThemeChecks:
         result = lint(roadmap)
         assert any("confidence" in i.message for i in result.warnings)
 
+    def test_blocked_theme_with_no_explanation_warns(self) -> None:
+        theme = Theme(name="T", status="blocked")
+        roadmap = _make_roadmap(
+            columns=[
+                Column(name="Now", themes=[theme]),
+                Column(name="Next"),
+                Column(name="Later"),
+            ]
+        )
+        result = lint(roadmap)
+        assert any("explanation" in i.message for i in result.warnings)
+
+    def test_blocked_theme_with_summary_does_not_warn_about_explanation(self) -> None:
+        theme = Theme(name="T", status="blocked", summary="Waiting on legal sign-off.")
+        roadmap = _make_roadmap(
+            columns=[
+                Column(name="Now", themes=[theme]),
+                Column(name="Next"),
+                Column(name="Later"),
+            ]
+        )
+        result = lint(roadmap)
+        assert not any("explanation" in i.message for i in result.issues)
+
     def test_later_theme_missing_confidence_does_not_warn(self) -> None:
         theme = Theme(name="T", objectives=["obj"], status="planned")
         roadmap = _make_roadmap(

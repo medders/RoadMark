@@ -45,6 +45,15 @@ class TestBuildCommand:
         result = runner.invoke(cli, ["build", "nonexistent.md"])
         assert result.exit_code != 0
 
+    def test_build_unknown_style(self, tmp_path: Path) -> None:
+        runner = CliRunner()
+        result = runner.invoke(
+            cli,
+            ["build", str(FIXTURES / "simple.md"), "--style", "nonexistent"],
+        )
+        assert result.exit_code != 0
+        assert "Error" in result.output
+
     def test_build_invalid_markdown(self, tmp_path: Path) -> None:
         runner = CliRunner()
         bad_file = tmp_path / "bad.md"

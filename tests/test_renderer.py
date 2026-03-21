@@ -61,6 +61,13 @@ class TestRender:
         html = render(roadmap)
         assert "https://jira.example.com/epic/101" in html
 
+    def test_unknown_style_raises_value_error(self) -> None:
+        roadmap = parse_file(FIXTURES / "simple.md")
+        import pytest
+
+        with pytest.raises(ValueError, match="nonexistent"):
+            render(roadmap, style="nonexistent")
+
     def test_html_is_escaped(self) -> None:
         """User content with special characters should be escaped."""
         from roadmark.models import Column, FrontMatter, Roadmap, Theme
