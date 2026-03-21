@@ -201,9 +201,7 @@ a:hover { text-decoration: underline; }
   border: 1px solid;
 }
 
-.column--now  .card__tag { background: #f0fdf4; border-color: #a7f3d0; color: #065f46; }
-.column--next .card__tag { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; }
-.column--later .card__tag { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+.card__tag { background: #f9fafb; border-color: #e5e7eb; color: #4b5563; }
 
 .card__tag-label {
   color: #9ca3af;
