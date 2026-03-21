@@ -154,13 +154,6 @@ a:hover { text-decoration: underline; }
   margin-bottom: 8px;
 }
 
-.card__title a {
-  text-decoration: none;
-  color: #58a6ff;
-}
-
-.card__title a:hover { text-decoration: underline; }
-
 /* ── Objectives ─────────────────────────────────────────────────────── */
 .card__objectives {
   margin-bottom: 10px;

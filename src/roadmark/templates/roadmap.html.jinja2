@@ -61,16 +61,10 @@
 
       <div class="column__stack">
         {% for theme in column.themes %}
-        <article class="card{% if theme.status %} card--status-{{ theme.status }}{% endif %}">
+        <article class="card">
 
           <div class="card__header">
-            <h3 class="card__title">
-              {% if theme.link %}
-              <a href="{{ theme.link }}" target="_blank" rel="noopener">{{ theme.name }}</a>
-              {% else %}
-              {{ theme.name }}
-              {% endif %}
-            </h3>
+            <h3 class="card__title">{{ theme.name }}</h3>
             {% if theme.status %}
             <span class="card__status card__status--{{ theme.status }}">{{ theme.status }}</span>
             {% endif %}

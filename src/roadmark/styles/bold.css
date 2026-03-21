@@ -128,15 +128,6 @@ a:hover { text-decoration: underline; }
   margin-bottom: 10px;
 }
 
-.card__title a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.card__title a:hover {
-  color: #60a5fa;
-}
-
 /* ── Objectives ─────────────────────────────────────────────────────── */
 .card__objectives {
   margin-bottom: 12px;
