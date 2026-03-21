@@ -1,0 +1,233 @@
+/* ── Reset & base ───────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               "Helvetica Neue", Arial, sans-serif;
+  background: #0f172a;
+  color: #f1f5f9;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a { color: inherit; }
+a:hover { text-decoration: underline; }
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+.header {
+  background: #1e293b;
+  border-bottom: 1px solid #334155;
+  padding: 32px 40px;
+}
+
+.header__title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #f1f5f9;
+  letter-spacing: -0.03em;
+}
+
+.header__meta {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.header__meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.header__description {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: #94a3b8;
+  max-width: 680px;
+}
+
+/* ── Board ──────────────────────────────────────────────────────────── */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  padding: 32px 40px;
+  flex: 1;
+  align-items: start;
+}
+
+/* ── Column ─────────────────────────────────────────────────────────── */
+.column {}
+
+.column__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.column__badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.column--now .column__badge   { background: #22c55e; color: #052e16; }
+.column--next .column__badge  { background: #3b82f6; color: #eff6ff; }
+.column--later .column__badge { background: #475569; color: #f1f5f9; }
+
+.column__count {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.column__stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.column--empty .column__stack::after {
+  content: "Nothing here yet";
+  display: block;
+  padding: 28px;
+  text-align: center;
+  color: #475569;
+  font-size: 0.85rem;
+  border: 2px dashed #334155;
+  border-radius: 8px;
+}
+
+/* ── Card ───────────────────────────────────────────────────────────── */
+.card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 20px;
+  transition: border-color 0.15s ease, transform 0.1s ease;
+}
+
+.card:hover {
+  border-color: #64748b;
+  transform: translateY(-1px);
+}
+
+.card__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.card__title a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card__title a:hover {
+  color: #60a5fa;
+}
+
+/* ── Objectives ─────────────────────────────────────────────────────── */
+.card__objectives {
+  margin-bottom: 12px;
+}
+
+.card__objectives-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.card__objectives-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.card__objectives-list li {
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  display: flex;
+  gap: 8px;
+}
+
+.card__objectives-list li::before {
+  content: "›";
+  color: #475569;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── Meta tags ──────────────────────────────────────────────────────── */
+.card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.card__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: #0f172a;
+  border: 1px solid #334155;
+  color: #94a3b8;
+}
+
+.card__tag-label {
+  color: #475569;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.card__link {
+  margin-top: 12px;
+}
+
+.card__link a {
+  font-size: 0.8rem;
+  color: #60a5fa;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.card__link a:hover { text-decoration: underline; }
+
+/* ── Footer ─────────────────────────────────────────────────────────── */
+.footer {
+  background: #1e293b;
+  border-top: 1px solid #334155;
+  padding: 14px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: #475569;
+}
+
+.footer__brand {
+  font-weight: 700;
+  color: #64748b;
+}
