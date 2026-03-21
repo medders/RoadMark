@@ -7,9 +7,15 @@ import frontmatter
 import mistune
 from pydantic import ValidationError
 
-from roadmark.models import Column, FrontMatter, Roadmap, Theme
+from roadmark.models import Column, ConfidenceT, FrontMatter, Roadmap, StatusT, Theme
 
 VALID_COLUMNS = {"Now", "Next", "Later"}
+VALID_STATUSES: frozenset[StatusT] = frozenset(
+    {"planned", "in-progress", "blocked", "shipped"}
+)
+VALID_CONFIDENCES: frozenset[ConfidenceT] = frozenset(
+    {"committed", "likely", "exploring"}
+)
 
 
 class ParseError(Exception):
@@ -161,6 +167,26 @@ def _parse_theme_list(token: dict[str, Any], theme: Theme) -> None:
             value = raw_text[len("link:") :].strip()
             if value:
                 theme.link = value  # type: ignore[assignment]
+
+        elif raw_text.lower().startswith("status:"):
+            value = raw_text[len("status:") :].strip().lower()
+            if value in VALID_STATUSES:
+                theme.status = value  # type: ignore[assignment]
+
+        elif raw_text.lower().startswith("confidence:"):
+            value = raw_text[len("confidence:") :].strip().lower()
+            if value in VALID_CONFIDENCES:
+                theme.confidence = value  # type: ignore[assignment]
+
+        elif raw_text.lower().startswith("target:"):
+            value = raw_text[len("target:") :].strip()
+            if value:
+                theme.target = value
+
+        elif raw_text.lower().startswith("summary:"):
+            value = raw_text[len("summary:") :].strip()
+            if value:
+                theme.summary = value
 
 
 def _extract_text(token: dict[str, Any]) -> str:

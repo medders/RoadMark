@@ -1,6 +1,11 @@
 """Data models for RoadMark roadmaps."""
 
+from typing import Literal
+
 from pydantic import BaseModel, HttpUrl
+
+StatusT = Literal["planned", "in-progress", "blocked", "shipped"]
+ConfidenceT = Literal["committed", "likely", "exploring"]
 
 
 class FrontMatter(BaseModel):
@@ -12,6 +17,7 @@ class FrontMatter(BaseModel):
     team: str | None = None
     team_link: HttpUrl | None = None
     last_updated: str | None = None
+    summary: str | None = None
 
 
 class Theme(BaseModel):
@@ -22,6 +28,10 @@ class Theme(BaseModel):
     stakeholders: list[str] = []
     components: list[str] = []
     link: HttpUrl | None = None
+    status: StatusT | None = None
+    confidence: ConfidenceT | None = None
+    target: str | None = None
+    summary: str | None = None
 
 
 class Column(BaseModel):

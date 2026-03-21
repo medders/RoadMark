@@ -108,3 +108,62 @@ class TestThemes:
         )
         roadmap = parse_file(md)
         assert roadmap.columns[0].themes[0].components == ["API", "Auth"]
+
+
+class TestNewThemeFields:
+    def _make(self, tmp_path: Path, fields: str) -> "Theme":  # noqa: F821
+        md = tmp_path / "t.md"
+        md.write_text(f"---\ntitle: T\n---\n\n## Now\n\n### Theme\n{fields}")
+        return parse_file(md).columns[0].themes[0]
+
+    def test_status_parsed(self, tmp_path: Path) -> None:
+        theme = self._make(tmp_path, "- status: in-progress\n")
+        assert theme.status == "in-progress"
+
+    def test_status_blocked(self, tmp_path: Path) -> None:
+        theme = self._make(tmp_path, "- status: blocked\n")
+        assert theme.status == "blocked"
+
+    def test_status_invalid_ignored(self, tmp_path: Path) -> None:
+        theme = self._make(tmp_path, "- status: banana\n")
+        assert theme.status is None
+
+    def test_confidence_parsed(self, tmp_path: Path) -> None:
+        theme = self._make(tmp_path, "- confidence: committed\n")
+        assert theme.confidence == "committed"
+
+    def test_confidence_invalid_ignored(self, tmp_path: Path) -> None:
+        theme = self._make(tmp_path, "- confidence: definitely\n")
+        assert theme.confidence is None
+
+    def test_target_parsed(self, tmp_path: Path) -> None:
+        theme = self._make(tmp_path, "- target: 2026 Q3\n")
+        assert theme.target == "2026 Q3"
+
+    def test_theme_summary_parsed(self, tmp_path: Path) -> None:
+        theme = self._make(tmp_path, "- summary: Upgrading the gateway.\n")
+        assert theme.summary == "Upgrading the gateway."
+
+    def test_new_fields_default_to_none(self, tmp_path: Path) -> None:
+        theme = self._make(tmp_path, "")
+        assert theme.status is None
+        assert theme.confidence is None
+        assert theme.target is None
+        assert theme.summary is None
+
+
+class TestFrontMatterSummary:
+    def test_summary_parsed(self, tmp_path: Path) -> None:
+        md = tmp_path / "s.md"
+        md.write_text(
+            "---\ntitle: T\nsummary: This quarter we focus on stability.\n---\n\n"
+            "## Now\n\n### Theme\n"
+        )
+        roadmap = parse_file(md)
+        assert roadmap.front_matter.summary == "This quarter we focus on stability."
+
+    def test_summary_optional(self) -> None:
+        from roadmark.models import FrontMatter
+
+        fm = FrontMatter(title="T")
+        assert fm.summary is None
