@@ -6,7 +6,7 @@ import pytest
 
 from roadmark.parser import ParseError, parse_file
 
-FIXTURES = Path(__file__).parent / "fixtures"
+FIXTURES = Path(__file__).parent.parent / "examples"
 
 
 class TestFrontMatter:

@@ -5,7 +5,7 @@ from pathlib import Path
 from roadmark.parser import parse_file
 from roadmark.renderer import render
 
-FIXTURES = Path(__file__).parent / "fixtures"
+FIXTURES = Path(__file__).parent.parent / "examples"
 
 
 class TestRender:

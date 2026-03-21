@@ -6,7 +6,7 @@ from click.testing import CliRunner
 
 from roadmark.cli import cli
 
-FIXTURES = Path(__file__).parent / "fixtures"
+FIXTURES = Path(__file__).parent.parent / "examples"
 
 
 class TestBuildCommand:
