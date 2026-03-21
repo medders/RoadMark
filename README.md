@@ -36,6 +36,14 @@ To specify an output path:
 roadmark build my-roadmap.md --output /path/to/output.html
 ```
 
+To use a different visual style:
+
+```bash
+roadmark build my-roadmap.md --style polished
+```
+
+RoadMark ships with 8 built-in themes. See [themes.md](themes.md) for a visual preview of each one.
+
 ---
 
 ## Input format
