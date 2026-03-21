@@ -60,17 +60,21 @@ owner: Jane Smith
 team: Platform Team
 team_link: https://example.com/platform
 last_updated: 2026-03-21
+summary: |
+  A paragraph of free-form context for stakeholders — why this roadmap
+  exists, what the current focus is, or any important caveats.
 ---
 ```
 
 | Field | Required | Description |
 |---|---|---|
 | `title` | Yes | Roadmap title, shown in the header |
-| `description` | No | Short summary, shown below the title |
+| `description` | No | Short subtitle, shown below the title |
 | `owner` | No | Roadmap owner |
 | `team` | No | Team name |
 | `team_link` | No | URL for the team (wraps `team` as a link) |
 | `last_updated` | No | Date shown in the header and footer |
+| `summary` | No | Freeform context paragraph shown above the board |
 
 ### Columns and themes
 
@@ -80,9 +84,13 @@ Columns are defined by `##` headings. The three valid column names are `Now`, `N
 ## Now
 
 ### API Gateway Upgrade
+- summary: Replace the legacy gateway to meet SLA commitments.
 - objectives:
   - Improve throughput by 30%
-  - Reduce p99 latency
+  - Reduce p99 latency below 50 ms
+- status: in-progress
+- confidence: committed
+- target: Q2 2026
 - stakeholder: CTO
 - component: API
 - link: https://jira.example.com/epic/101
@@ -92,12 +100,17 @@ Columns are defined by `##` headings. The three valid column names are `Now`, `N
 ### Observability Improvements
 - objectives:
   - Add distributed tracing
-- component: Infra
+  - Centralise log aggregation
+- status: planned
+- confidence: likely
+- target: Q3 2026
 
 ## Later
 
 ### Multi-region Support
-- link: https://jira.example.com/epic/250
+- summary: Active-active deployment across EU and US.
+- status: planned
+- confidence: exploring
 ```
 
 ### Theme fields
@@ -105,12 +118,20 @@ Columns are defined by `##` headings. The three valid column names are `Now`, `N
 | Field | Required | Description |
 |---|---|---|
 | Theme name (`###` heading) | Yes | Displayed as the card title |
-| `objectives` | No | List of objectives, rendered as bullet points |
-| `stakeholder` | No | Key stakeholder, shown as a tag on the card |
-| `component` | No | Component or area, shown as a tag on the card |
+| `summary` | No | One-sentence description of the theme, shown below the title |
+| `objectives` | No | List of measurable outcomes, rendered as bullet points |
+| `status` | No | `planned`, `in-progress`, `blocked`, or `done` |
+| `confidence` | No | `committed`, `likely`, or `exploring` |
+| `target` | No | Target date or quarter (free-form, e.g. `Q2 2026`) |
+| `stakeholder` | No | Single stakeholder (shorthand for `stakeholders`) |
+| `stakeholders` | No | List of stakeholders, shown as tags on the card |
+| `component` | No | Single component or area (shorthand for `components`) |
+| `components` | No | List of components, shown as tags on the card |
 | `link` | No | URL to an external tracker (Jira, Linear, GitHub, etc.) |
 
-The `link` field is product-agnostic — paste any URL. It is rendered as a "View details" link on the card and does not fetch any data from the external system.
+All fields except the theme name are optional. The `link` field is product-agnostic — it renders as a "View details" link and does not fetch data from the external system.
+
+Not all themes need every field. Items further out on the roadmap should be less specified — a `Later` item with just a `summary` and `confidence: exploring` is more honest than a fully-detailed card for work that hasn't been scoped yet.
 
 ---
 
@@ -130,19 +151,38 @@ owner: Jane Smith
 team: Platform Team
 team_link: https://example.com/platform
 last_updated: 2026-03-21
+summary: |
+  This quarter we're focused on reliability and developer experience.
+  The gateway upgrade and auth refactor are our top priorities;
+  observability work unblocks both of them.
 ---
 
 ## Now
 
 ### API Gateway Upgrade
+- summary: Replace the legacy gateway with a high-throughput layer to meet SLA commitments.
 - objectives:
   - Improve throughput by 30%
-  - Reduce p99 latency
-- stakeholder: CTO
-- component: API
+  - Reduce p99 latency below 50 ms
+- status: in-progress
+- confidence: committed
+- target: Q2 2026
+- stakeholders:
+  - CTO
+  - Head of Engineering
+- components:
+  - API
+  - Gateway
 - link: https://jira.example.com/epic/101
 
 ### Auth Refactor
+- summary: Migrate session tokens to a compliant storage mechanism.
+- objectives:
+  - Remove legacy session store
+  - Implement short-lived JWT rotation
+- status: blocked
+- confidence: likely
+- target: Q2 2026
 - stakeholder: Security Lead
 - component: Auth
 
@@ -150,16 +190,28 @@ last_updated: 2026-03-21
 
 ### Observability Improvements
 - objectives:
-  - Add distributed tracing
+  - Add distributed tracing across all services
   - Centralise log aggregation
-- component: Infra
+- status: planned
+- confidence: likely
+- target: Q3 2026
+
+### Developer Portal
+- summary: Self-service tooling so teams can ship without a platform ticket.
+- status: planned
+- confidence: exploring
 
 ## Later
 
 ### Multi-region Support
-- objectives:
-  - Active-active in EU and US
-- link: https://jira.example.com/epic/250
+- summary: Active-active deployment across EU and US to meet data-residency requirements.
+- status: planned
+- confidence: exploring
+
+### Event Streaming Platform
+- summary: Replace polling patterns with an event-driven architecture.
+- status: planned
+- confidence: exploring
 ```
 
 ---

@@ -63,5 +63,6 @@ summary: |
 - confidence: exploring
 
 ### Event Streaming Platform
+- summary: Replace polling patterns with an event-driven architecture.
 - status: planned
 - confidence: exploring
