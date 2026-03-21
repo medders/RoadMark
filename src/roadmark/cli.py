@@ -5,7 +5,7 @@ from pathlib import Path
 import click
 
 from roadmark.parser import ParseError, parse_file
-from roadmark.renderer import render
+from roadmark.renderer import DEFAULT_STYLE, list_styles, render
 
 
 @click.group()
@@ -24,7 +24,14 @@ def cli() -> None:
     default=None,
     help="Output HTML file path. Defaults to <input>.html.",
 )
-def build(input_file: Path, output: Path | None) -> None:
+@click.option(
+    "--style",
+    "-s",
+    default=DEFAULT_STYLE,
+    show_default=True,
+    help=f"CSS style to apply. Available: {', '.join(list_styles())}.",
+)
+def build(input_file: Path, output: Path | None, style: str) -> None:
     """Build an HTML roadmap from INPUT_FILE."""
     if output is None:
         output = input_file.with_suffix(".html")
@@ -34,6 +41,10 @@ def build(input_file: Path, output: Path | None) -> None:
     except ParseError as exc:
         raise click.ClickException(str(exc)) from exc
 
-    html = render(roadmap)
+    try:
+        html = render(roadmap, style=style)
+    except ValueError as exc:
+        raise click.ClickException(str(exc)) from exc
+
     output.write_text(html, encoding="utf-8")
     click.echo(f"Roadmap written to {output}")
