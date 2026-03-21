@@ -6,7 +6,7 @@ import click
 
 from roadmark.linter import Severity, lint
 from roadmark.parser import ParseError, parse_file
-from roadmark.renderer import DEFAULT_STYLE, list_styles, render
+from roadmark.renderer import DEFAULT_STYLE, list_styles, render, render_fragment
 
 _INIT_TEMPLATE = """\
 ---
@@ -77,10 +77,17 @@ def cli() -> None:
     show_default=True,
     help=f"CSS style to apply. Available: {', '.join(list_styles())}.",
 )
-def build(input_file: Path, output: Path | None, style: str) -> None:
+@click.option(
+    "--fragment",
+    is_flag=True,
+    default=False,
+    help="Output an HTML fragment for pasting into a Confluence HTML macro.",
+)
+def build(input_file: Path, output: Path | None, style: str, fragment: bool) -> None:
     """Build an HTML roadmap from INPUT_FILE."""
     if output is None:
-        output = input_file.with_suffix(".html")
+        suffix = ".fragment.html" if fragment else ".html"
+        output = input_file.with_suffix(suffix)
 
     try:
         roadmap = parse_file(input_file)
@@ -88,12 +95,20 @@ def build(input_file: Path, output: Path | None, style: str) -> None:
         raise click.ClickException(str(exc)) from exc
 
     try:
-        html = render(roadmap, style=style)
+        html = (
+            render_fragment(roadmap, style=style)
+            if fragment
+            else render(roadmap, style=style)
+        )
     except ValueError as exc:
         raise click.ClickException(str(exc)) from exc
 
     output.write_text(html, encoding="utf-8")
-    click.echo(f"Roadmap written to {output} (style: {style})")
+    if fragment:
+        click.echo(f"Fragment written to {output}")
+        click.echo("Paste the file contents into the Confluence HTML macro.")
+    else:
+        click.echo(f"Roadmap written to {output} (style: {style})")
 
 
 @cli.command()

@@ -59,3 +59,29 @@ def render(roadmap: Roadmap, style: str = DEFAULT_STYLE) -> str:
     env = Environment(loader=BaseLoader(), autoescape=True)
     template = env.from_string(template_text)
     return template.render(roadmap=roadmap, styles=css)
+
+
+def render_fragment(roadmap: Roadmap, style: str = DEFAULT_STYLE) -> str:
+    """Render a Roadmap model as an HTML fragment for Confluence HTML macro embedding.
+
+    The fragment starts with a <style> block followed by the page content —
+    no <!DOCTYPE>, <html>, <head>, or <body> wrapper. Paste the output directly
+    into the Confluence HTML macro.
+
+    Args:
+        roadmap: The parsed roadmap to render.
+        style: The name of the CSS style to apply. Defaults to "default".
+
+    Returns:
+        An HTML fragment string starting with <style>...</style>.
+
+    Raises:
+        ValueError: If the style name is not recognised.
+    """
+    css = load_style(style)
+    template_text = (
+        files("roadmark.templates").joinpath("roadmap.fragment.html.jinja2").read_text()
+    )
+    env = Environment(loader=BaseLoader(), autoescape=True)
+    template = env.from_string(template_text)
+    return template.render(roadmap=roadmap, styles=css)
