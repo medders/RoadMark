@@ -24,6 +24,25 @@ class TestFrontMatter:
         assert str(fm.team_link) == "https://example.com/platform"
         assert fm.last_updated == "2026-03-21"
 
+    def test_edit_link_parsed(self, tmp_path: Path) -> None:
+        md = tmp_path / "edit.md"
+        md.write_text(
+            "---\ntitle: T\n"
+            "edit_link: https://github.com/org/repo/edit/main/roadmap.md\n"
+            "edit_link_text: GitHub\n"
+            "---\n\n## Now\n\n### Theme\n"
+        )
+        fm = parse_file(md).front_matter
+        assert str(fm.edit_link) == "https://github.com/org/repo/edit/main/roadmap.md"
+        assert fm.edit_link_text == "GitHub"
+
+    def test_edit_link_optional(self, tmp_path: Path) -> None:
+        md = tmp_path / "no_edit.md"
+        md.write_text("---\ntitle: T\n---\n\n## Now\n\n### Theme\n")
+        fm = parse_file(md).front_matter
+        assert fm.edit_link is None
+        assert fm.edit_link_text is None
+
     def test_missing_title_raises(self, tmp_path: Path) -> None:
         md = tmp_path / "no_title.md"
         md.write_text("---\nowner: Bob\n---\n\n## Now\n\n### Theme\n")

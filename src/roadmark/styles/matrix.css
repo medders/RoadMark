@@ -314,3 +314,7 @@
 .roadmark-scope .card__tag--confidence-committed { border-color: #007730; color: #00b347; background: #001200; }
 .roadmark-scope .card__tag--confidence-likely    { border-color: #004418; color: #006622; background: #000800; }
 .roadmark-scope .card__tag--confidence-exploring { border-color: #002200; color: #003d18; background: #000000; }
+
+/* ── Footer edit link ───────────────────────────────────────────────── */
+.roadmark-scope .footer__edit-link { color: inherit; text-decoration: none; }
+.roadmark-scope .footer__edit-link:hover { text-decoration: underline; }

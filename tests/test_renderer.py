@@ -61,6 +61,39 @@ class TestRender:
         html = render(roadmap)
         assert "https://jira.example.com/epic/101" in html
 
+    def test_edit_link_rendered_in_footer(self) -> None:
+        from roadmark.models import Column, FrontMatter, Roadmap
+
+        roadmap = Roadmap(
+            front_matter=FrontMatter(
+                title="T",
+                edit_link="https://github.com/org/repo/edit/main/roadmap.md",  # type: ignore[arg-type]
+                edit_link_text="GitHub",
+            ),
+            columns=[Column(name="Now")],
+        )
+        html = render(roadmap)
+        assert "Edit on GitHub" in html
+        assert "https://github.com/org/repo/edit/main/roadmap.md" in html
+
+    def test_edit_link_uses_default_text(self) -> None:
+        from roadmark.models import Column, FrontMatter, Roadmap
+
+        roadmap = Roadmap(
+            front_matter=FrontMatter(
+                title="T",
+                edit_link="https://github.com/org/repo",  # type: ignore[arg-type]
+            ),
+            columns=[Column(name="Now")],
+        )
+        html = render(roadmap)
+        assert "Edit on Git" in html
+
+    def test_no_edit_link_renders_no_edit_element(self) -> None:
+        roadmap_no_link = parse_file(FIXTURES / "simple.md")
+        html = render(roadmap_no_link)
+        assert "Edit on" not in html
+
     def test_unknown_style_raises_value_error(self) -> None:
         roadmap = parse_file(FIXTURES / "simple.md")
         import pytest

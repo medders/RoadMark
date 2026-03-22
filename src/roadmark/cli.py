@@ -16,6 +16,8 @@ owner: Your Name
 team: Platform Team
 team_link: https://example.com/team
 last_updated: {today}
+# edit_link: https://github.com/your-org/your-repo/edit/main/roadmap.md
+# edit_link_text: GitHub
 summary: |
   A paragraph of free-form context for stakeholders — why this roadmap
   exists, what the current quarter focus is, or any important caveats.

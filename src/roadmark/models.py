@@ -18,6 +18,8 @@ class FrontMatter(BaseModel):
     team_link: HttpUrl | None = None
     last_updated: str | None = None
     summary: str | None = None
+    edit_link: HttpUrl | None = None
+    edit_link_text: str | None = None
 
 
 class Theme(BaseModel):
