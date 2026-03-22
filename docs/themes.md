@@ -1,6 +1,6 @@
 # Themes
 
-RoadMark ships with 8 built-in themes. Pass `--style <name>` to the build command to use one:
+RoadMark ships with 11 built-in themes. Pass `--style <name>` to the build command to use one:
 
 ```bash
 roadmark build my-roadmap.md --style polished
@@ -73,3 +73,29 @@ High contrast dark background with vivid accent colors and prominent card border
 Monospace font, dim green accents, and a dark background for a command-line aesthetic.
 
 ![terminal](screenshots/terminal.png)
+
+---
+
+## Sci-fi themes
+
+### lcars
+
+Star Trek LCARS panel interface. Black background with orange, violet, and mauve column colour-coding. Rounded-left column headers and thick coloured card borders.
+
+![lcars](screenshots/lcars.png)
+
+---
+
+### dradis
+
+Battlestar Galactica CIC tactical display. Near-black background, amber phosphor palette, hard edges, monospace type, and military-style `//` delimiters and `[count]` notation.
+
+![dradis](screenshots/dradis.png)
+
+---
+
+### matrix
+
+The Matrix. Pure black with a subtle scanline texture, phosphor green throughout, title glow, and a blinking cursor on empty columns.
+
+![matrix](screenshots/matrix.png)

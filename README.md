@@ -58,7 +58,7 @@ To use a different visual style:
 roadmark build my-roadmap.md --style polished
 ```
 
-RoadMark ships with 8 built-in themes. See [docs/themes.md](docs/themes.md) for a visual preview of each one.
+RoadMark ships with 11 built-in themes. See [docs/themes.md](docs/themes.md) for a visual preview of each one.
 
 To generate an HTML fragment for pasting into a Confluence HTML macro:
 
