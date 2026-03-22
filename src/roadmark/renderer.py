@@ -2,6 +2,7 @@
 
 from importlib.resources import files
 
+import minify_html
 from jinja2 import BaseLoader, Environment
 
 from roadmark.models import Roadmap
@@ -84,4 +85,5 @@ def render_fragment(roadmap: Roadmap, style: str = DEFAULT_STYLE) -> str:
     )
     env = Environment(loader=BaseLoader(), autoescape=True)
     template = env.from_string(template_text)
-    return template.render(roadmap=roadmap, styles=css)
+    html = template.render(roadmap=roadmap, styles=css)
+    return minify_html.minify(html, minify_css=True)
