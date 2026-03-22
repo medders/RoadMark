@@ -112,8 +112,11 @@ def _parse_body(content: str) -> tuple[list[Column], list[str]]:
                 current_theme = Theme(name=text)
                 current_column.themes.append(current_theme)
 
-        elif token_type == "list" and current_theme is not None:
-            assert current_column is not None
+        elif (
+            token_type == "list"
+            and current_theme is not None
+            and current_column is not None
+        ):
             location = f"column '{current_column.name}' > theme '{current_theme.name}'"
             _parse_theme_list(token, current_theme, warnings, location)
 
