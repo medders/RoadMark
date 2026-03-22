@@ -94,6 +94,9 @@ def build(input_file: Path, output: Path | None, style: str, fragment: bool) -> 
     except ParseError as exc:
         raise click.ClickException(str(exc)) from exc
 
+    for warning in roadmap.parse_warnings:
+        click.echo(click.style(f"Warning: {warning}", fg="yellow"), err=True)
+
     try:
         html = (
             render_fragment(roadmap, style=style)

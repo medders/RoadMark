@@ -2,7 +2,7 @@
 
 from typing import Literal
 
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel, Field, HttpUrl
 
 StatusT = Literal["planned", "in-progress", "blocked", "in-review"]
 ConfidenceT = Literal["committed", "likely", "exploring"]
@@ -46,3 +46,4 @@ class Roadmap(BaseModel):
 
     front_matter: FrontMatter
     columns: list[Column] = []
+    parse_warnings: list[str] = Field(default_factory=list)

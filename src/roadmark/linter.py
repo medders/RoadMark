@@ -41,9 +41,17 @@ class LintResult:
 def lint(roadmap: Roadmap) -> LintResult:
     """Run all lint checks against *roadmap* and return a LintResult."""
     result = LintResult()
+    _check_parse_warnings(roadmap, result)
     _check_columns(roadmap, result)
     _check_themes(roadmap, result)
     return result
+
+
+def _check_parse_warnings(roadmap: Roadmap, result: LintResult) -> None:
+    for warning in roadmap.parse_warnings:
+        # Warnings are formatted as "location: message"
+        location, _, message = warning.partition(": ")
+        result.issues.append(Issue(Severity.WARNING, location, message))
 
 
 def _check_columns(roadmap: Roadmap, result: LintResult) -> None:

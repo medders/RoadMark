@@ -127,11 +127,27 @@ class TestThemes:
         roadmap = parse_file(md)
         assert roadmap.columns[0].themes[0].stakeholders == ["Alice", "Bob"]
 
+    def test_multiple_stakeholders_via_comma_separated(self, tmp_path: Path) -> None:
+        md = tmp_path / "multi.md"
+        md.write_text(
+            "---\ntitle: T\n---\n\n## Now\n\n### Theme\n- stakeholders: Alice, Bob\n"
+        )
+        roadmap = parse_file(md)
+        assert roadmap.columns[0].themes[0].stakeholders == ["Alice", "Bob"]
+
     def test_multiple_components_via_list(self, tmp_path: Path) -> None:
         md = tmp_path / "multi.md"
         md.write_text(
             "---\ntitle: T\n---\n\n## Now\n\n### Theme\n"
             "- components:\n  - API\n  - Auth\n"
+        )
+        roadmap = parse_file(md)
+        assert roadmap.columns[0].themes[0].components == ["API", "Auth"]
+
+    def test_multiple_components_via_comma_separated(self, tmp_path: Path) -> None:
+        md = tmp_path / "multi.md"
+        md.write_text(
+            "---\ntitle: T\n---\n\n## Now\n\n### Theme\n- components: API, Auth\n"
         )
         roadmap = parse_file(md)
         assert roadmap.columns[0].themes[0].components == ["API", "Auth"]
@@ -143,6 +159,11 @@ class TestNewThemeFields:
         md.write_text(f"---\ntitle: T\n---\n\n## Now\n\n### Theme\n{fields}")
         return parse_file(md).columns[0].themes[0]
 
+    def _make_roadmap(self, tmp_path: Path, fields: str) -> "Roadmap":  # noqa: F821
+        md = tmp_path / "t.md"
+        md.write_text(f"---\ntitle: T\n---\n\n## Now\n\n### Theme\n{fields}")
+        return parse_file(md)
+
     def test_status_parsed(self, tmp_path: Path) -> None:
         theme = self._make(tmp_path, "- status: in-progress\n")
         assert theme.status == "in-progress"
@@ -151,17 +172,23 @@ class TestNewThemeFields:
         theme = self._make(tmp_path, "- status: blocked\n")
         assert theme.status == "blocked"
 
-    def test_status_invalid_ignored(self, tmp_path: Path) -> None:
-        theme = self._make(tmp_path, "- status: banana\n")
-        assert theme.status is None
+    def test_status_invalid_produces_warning(self, tmp_path: Path) -> None:
+        roadmap = self._make_roadmap(tmp_path, "- status: banana\n")
+        assert roadmap.columns[0].themes[0].status is None
+        assert any("banana" in w for w in roadmap.parse_warnings)
 
     def test_confidence_parsed(self, tmp_path: Path) -> None:
         theme = self._make(tmp_path, "- confidence: committed\n")
         assert theme.confidence == "committed"
 
-    def test_confidence_invalid_ignored(self, tmp_path: Path) -> None:
-        theme = self._make(tmp_path, "- confidence: definitely\n")
-        assert theme.confidence is None
+    def test_confidence_invalid_produces_warning(self, tmp_path: Path) -> None:
+        roadmap = self._make_roadmap(tmp_path, "- confidence: definitely\n")
+        assert roadmap.columns[0].themes[0].confidence is None
+        assert any("definitely" in w for w in roadmap.parse_warnings)
+
+    def test_unknown_key_produces_warning(self, tmp_path: Path) -> None:
+        roadmap = self._make_roadmap(tmp_path, "- due_date: Q2 2026\n")
+        assert any("due_date" in w for w in roadmap.parse_warnings)
 
     def test_target_parsed(self, tmp_path: Path) -> None:
         theme = self._make(tmp_path, "- target: 2026 Q3\n")

@@ -62,6 +62,20 @@ class TestBuildCommand:
         assert result.exit_code != 0
         assert "Error" in result.output
 
+    def test_build_prints_parse_warnings(self, tmp_path: Path) -> None:
+        runner = CliRunner()
+        md = tmp_path / "warn.md"
+        md.write_text(
+            "---\ntitle: T\n---\n\n## Now\n\n### Theme\n"
+            "- status: typo\n- unknown_field: value\n\n## Next\n\n## Later\n"
+        )
+        result = runner.invoke(
+            cli, ["build", str(md), "--output", str(tmp_path / "out.html")]
+        )
+        assert result.exit_code == 0
+        assert "typo" in result.output
+        assert "unknown_field" in result.output
+
     def test_default_output_path(self, tmp_path: Path) -> None:
         """Output defaults to <input>.html when --output is not given."""
         runner = CliRunner()

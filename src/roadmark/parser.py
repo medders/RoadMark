@@ -40,7 +40,7 @@ def parse_file(path: Path) -> Roadmap:
     post = frontmatter.loads(text)
 
     front_matter = _parse_front_matter(post.metadata)
-    columns = _parse_body(post.content)
+    columns, warnings = _parse_body(post.content)
 
     if not columns:
         raise ParseError(
@@ -48,7 +48,7 @@ def parse_file(path: Path) -> Roadmap:
             "The file must contain at least one ## Now, ## Next, or ## Later heading."
         )
 
-    return Roadmap(front_matter=front_matter, columns=columns)
+    return Roadmap(front_matter=front_matter, columns=columns, parse_warnings=warnings)
 
 
 def _parse_front_matter(metadata: dict[str, Any]) -> FrontMatter:
@@ -69,12 +69,16 @@ def _parse_front_matter(metadata: dict[str, Any]) -> FrontMatter:
         raise ParseError(f"Invalid frontmatter: {errors}") from exc
 
 
-def _parse_body(content: str) -> list[Column]:
-    """Walk the Markdown AST and extract columns and themes."""
+def _parse_body(content: str) -> tuple[list[Column], list[str]]:
+    """Walk the Markdown AST and extract columns and themes.
+
+    Returns a tuple of (columns, parse_warnings).
+    """
     md = mistune.create_markdown(renderer=None)
     tokens: list[dict[str, Any]] = md(content)  # type: ignore[assignment]
 
     columns: list[Column] = []
+    warnings: list[str] = []
     current_column: Column | None = None
     current_theme: Theme | None = None
 
@@ -101,13 +105,36 @@ def _parse_body(content: str) -> list[Column]:
                 current_column.themes.append(current_theme)
 
         elif token_type == "list" and current_theme is not None:
-            _parse_theme_list(token, current_theme)
+            assert current_column is not None
+            location = f"column '{current_column.name}' > theme '{current_theme.name}'"
+            _parse_theme_list(token, current_theme, warnings, location)
 
     columns.sort(key=lambda c: COLUMN_ORDER.index(c.name))
-    return columns
+    return columns, warnings
 
 
-def _parse_theme_list(token: dict[str, Any], theme: Theme) -> None:
+_KNOWN_KEYS = frozenset(
+    {
+        "objectives",
+        "stakeholders",
+        "stakeholder",
+        "components",
+        "component",
+        "link",
+        "status",
+        "confidence",
+        "target",
+        "summary",
+    }
+)
+
+
+def _parse_theme_list(
+    token: dict[str, Any],
+    theme: Theme,
+    warnings: list[str],
+    location: str,
+) -> None:
     """Parse a bulleted list of key: value pairs into Theme fields."""
     children: list[dict[str, Any]] = token.get("children", [])
 
@@ -122,6 +149,12 @@ def _parse_theme_list(token: dict[str, Any], theme: Theme) -> None:
         # The first child of a list_item is typically a block_text or paragraph
         first_child = item_children[0]
         raw_text = _extract_text(first_child).strip()
+
+        # Extract the key (text before the first colon)
+        if ":" in raw_text:
+            raw_key = raw_text[: raw_text.index(":")].strip().lower()
+        else:
+            raw_key = raw_text.lower()
 
         if raw_text.lower().startswith("objectives:"):
             # Objectives may be inline ("objectives: foo") or a nested list
@@ -138,13 +171,21 @@ def _parse_theme_list(token: dict[str, Any], theme: Theme) -> None:
                                 theme.objectives.append(obj_text)
 
         elif raw_text.lower().startswith("stakeholders:"):
-            # Plural form: expects a nested list
-            for child in item_children[1:]:
-                if child.get("type") == "list":
-                    for sub_item in child.get("children", []):
-                        value = _extract_text(sub_item).strip()
-                        if value:
-                            theme.stakeholders.append(value)
+            inline = raw_text[len("stakeholders:") :].strip()
+            if inline:
+                # Comma-separated inline form: "stakeholders: Alice, Bob"
+                for v in inline.split(","):
+                    v = v.strip()
+                    if v:
+                        theme.stakeholders.append(v)
+            else:
+                # Nested list form
+                for child in item_children[1:]:
+                    if child.get("type") == "list":
+                        for sub_item in child.get("children", []):
+                            value = _extract_text(sub_item).strip()
+                            if value:
+                                theme.stakeholders.append(value)
 
         elif raw_text.lower().startswith("stakeholder:"):
             # Singular shorthand: inline single value
@@ -153,13 +194,21 @@ def _parse_theme_list(token: dict[str, Any], theme: Theme) -> None:
                 theme.stakeholders.append(value)
 
         elif raw_text.lower().startswith("components:"):
-            # Plural form: expects a nested list
-            for child in item_children[1:]:
-                if child.get("type") == "list":
-                    for sub_item in child.get("children", []):
-                        value = _extract_text(sub_item).strip()
-                        if value:
-                            theme.components.append(value)
+            inline = raw_text[len("components:") :].strip()
+            if inline:
+                # Comma-separated inline form: "components: API, Auth"
+                for v in inline.split(","):
+                    v = v.strip()
+                    if v:
+                        theme.components.append(v)
+            else:
+                # Nested list form
+                for child in item_children[1:]:
+                    if child.get("type") == "list":
+                        for sub_item in child.get("children", []):
+                            value = _extract_text(sub_item).strip()
+                            if value:
+                                theme.components.append(value)
 
         elif raw_text.lower().startswith("component:"):
             # Singular shorthand: inline single value
@@ -176,11 +225,22 @@ def _parse_theme_list(token: dict[str, Any], theme: Theme) -> None:
             value = raw_text[len("status:") :].strip().lower()
             if value in VALID_STATUSES:
                 theme.status = value  # type: ignore[assignment]
+            else:
+                valid = ", ".join(sorted(VALID_STATUSES))
+                warnings.append(
+                    f"{location}: unrecognised status {value!r} — valid values: {valid}"
+                )
 
         elif raw_text.lower().startswith("confidence:"):
             value = raw_text[len("confidence:") :].strip().lower()
             if value in VALID_CONFIDENCES:
                 theme.confidence = value  # type: ignore[assignment]
+            else:
+                valid = ", ".join(sorted(VALID_CONFIDENCES))
+                warnings.append(
+                    f"{location}: unrecognised confidence {value!r}"
+                    f" — valid values: {valid}"
+                )
 
         elif raw_text.lower().startswith("target:"):
             value = raw_text[len("target:") :].strip()
@@ -191,6 +251,9 @@ def _parse_theme_list(token: dict[str, Any], theme: Theme) -> None:
             value = raw_text[len("summary:") :].strip()
             if value:
                 theme.summary = value
+
+        elif raw_key and raw_key not in _KNOWN_KEYS:
+            warnings.append(f"{location}: unrecognised field {raw_key!r} — ignored")
 
 
 def _extract_text(token: dict[str, Any]) -> str:

@@ -163,6 +163,33 @@ class TestThemeChecks:
         assert not any("confidence" in i.message for i in result.issues)
 
 
+class TestParseWarnings:
+    def test_parse_warnings_surfaced_as_lint_warnings(self) -> None:
+        roadmap = _make_roadmap()
+        roadmap.parse_warnings.append(
+            "column 'Now' > theme 'T': unrecognised field 'foo' — ignored"
+        )
+        result = lint(roadmap)
+        assert any("foo" in i.message for i in result.warnings)
+
+    def test_parse_warnings_location_and_message_split_correctly(self) -> None:
+        roadmap = _make_roadmap()
+        roadmap.parse_warnings.append(
+            "column 'Now' > theme 'T': unrecognised status 'banana' — valid values: ..."
+        )
+        result = lint(roadmap)
+        issue = next(i for i in result.warnings if "banana" in i.message)
+        assert issue.location == "column 'Now' > theme 'T'"
+        assert "banana" in issue.message
+
+    def test_no_parse_warnings_produces_no_extra_issues(self) -> None:
+        roadmap = _make_roadmap()
+        assert roadmap.parse_warnings == []
+        result = lint(roadmap)
+        # Only the expected structural issues (empty columns etc), no parse issues
+        assert not any("unrecognised" in i.message for i in result.issues)
+
+
 class TestLintCliCommand:
     def test_lint_command_exits_zero_on_clean_file(self, tmp_path: Path) -> None:
         runner = CliRunner()
