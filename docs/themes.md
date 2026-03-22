@@ -14,7 +14,7 @@ roadmark build my-roadmap.md --style polished
 
 Clean and neutral. Color-coded column badges (green / blue / grey) on a light grey canvas.
 
-![default](docs/screenshots/default.png)
+![default](screenshots/default.png)
 
 ---
 
@@ -22,7 +22,7 @@ Clean and neutral. Color-coded column badges (green / blue / grey) on a light gr
 
 Typography-first. No card borders or shadows — just clean whitespace and restrained color.
 
-![minimal](docs/screenshots/minimal.png)
+![minimal](screenshots/minimal.png)
 
 ---
 
@@ -30,7 +30,7 @@ Typography-first. No card borders or shadows — just clean whitespace and restr
 
 Refined and professional, with strong column dividers and crisp sans-serif type.
 
-![polished](docs/screenshots/polished.png)
+![polished](screenshots/polished.png)
 
 ---
 
@@ -38,7 +38,7 @@ Refined and professional, with strong column dividers and crisp sans-serif type.
 
 Conservative and corporate-safe. Muted palette, tight spacing, dense information layout.
 
-![enterprise](docs/screenshots/enterprise.png)
+![enterprise](screenshots/enterprise.png)
 
 ---
 
@@ -46,7 +46,7 @@ Conservative and corporate-safe. Muted palette, tight spacing, dense information
 
 Soft pastel backgrounds with gentle tones — approachable and easy on the eye.
 
-![pastel](docs/screenshots/pastel.png)
+![pastel](screenshots/pastel.png)
 
 ---
 
@@ -54,7 +54,7 @@ Soft pastel backgrounds with gentle tones — approachable and easy on the eye.
 
 Each column has its own background colour: green for Now, blue for Next, amber for Later.
 
-![tricolor](docs/screenshots/tricolor.png)
+![tricolor](screenshots/tricolor.png)
 
 ---
 
@@ -64,7 +64,7 @@ Each column has its own background colour: green for Now, blue for Next, amber f
 
 High contrast dark background with vivid accent colors and prominent card borders.
 
-![bold](docs/screenshots/bold.png)
+![bold](screenshots/bold.png)
 
 ---
 
@@ -72,4 +72,4 @@ High contrast dark background with vivid accent colors and prominent card border
 
 Monospace font, dim green accents, and a dark background for a command-line aesthetic.
 
-![terminal](docs/screenshots/terminal.png)
+![terminal](screenshots/terminal.png)
