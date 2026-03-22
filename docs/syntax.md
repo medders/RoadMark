@@ -215,7 +215,7 @@ No. `Now`, `Next`, and `Later` are the only valid columns. The three-column stru
 No. `status:` can appear before or after `objectives:`. The parser reads all fields in any order.
 
 **Can a column appear more than once?**
-No. If `## Now` appears twice, the second occurrence is treated as a new column, and the parser will sort them — effectively merging both `Now` sections into one column in the output.
+No. If `## Now` appears twice, the themes from the second occurrence are merged into the first, and a warning is emitted. Split your themes across the two sections if you like, but the output will combine them.
 
 **What happens if I misspell a field value?**
 `roadmark build` and `roadmark lint` will both emit a warning identifying the unrecognised value and listing the valid options. The field will be left unset for that theme.

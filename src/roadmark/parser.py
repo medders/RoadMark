@@ -91,8 +91,16 @@ def _parse_body(content: str) -> tuple[list[Column], list[str]]:
 
             if level == 2:
                 if text in VALID_COLUMNS:
-                    current_column = Column(name=text)
-                    columns.append(current_column)
+                    existing = next((c for c in columns if c.name == text), None)
+                    if existing is not None:
+                        warnings.append(
+                            f"Duplicate column heading '## {text}' — "
+                            "themes merged into the first occurrence."
+                        )
+                        current_column = existing
+                    else:
+                        current_column = Column(name=text)
+                        columns.append(current_column)
                     current_theme = None
                 else:
                     raise ParseError(

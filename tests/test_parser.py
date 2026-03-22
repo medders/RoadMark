@@ -63,6 +63,24 @@ class TestColumns:
         assert roadmap.columns[1].themes[0].name == "B"
         assert roadmap.columns[2].themes[0].name == "C"
 
+    def test_duplicate_column_merges_themes_and_warns(self, tmp_path: Path) -> None:
+        md = tmp_path / "dup.md"
+        md.write_text(
+            "---\ntitle: T\n---\n\n"
+            "## Now\n\n### Alpha\n\n"
+            "## Next\n\n### Beta\n\n"
+            "## Now\n\n### Gamma\n"
+        )
+        roadmap = parse_file(md)
+        # Only one Now column
+        now_cols = [c for c in roadmap.columns if c.name == "Now"]
+        assert len(now_cols) == 1
+        # Both themes present in that column
+        theme_names = [t.name for t in now_cols[0].themes]
+        assert theme_names == ["Alpha", "Gamma"]
+        # Warning emitted
+        assert any("Duplicate" in w and "Now" in w for w in roadmap.parse_warnings)
+
     def test_unrecognised_column_heading_raises(self, tmp_path: Path) -> None:
         md = tmp_path / "bad_heading.md"
         md.write_text(
