@@ -8,8 +8,6 @@ from roadmark.cli import cli
 from roadmark.linter import Severity, lint
 from roadmark.models import Column, FrontMatter, Roadmap, Theme
 
-FIXTURES = Path(__file__).parent / "fixtures"
-
 
 def _make_roadmap(
     columns: list[Column] | None = None,
