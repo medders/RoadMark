@@ -3,7 +3,7 @@
 from importlib.resources import files
 
 import minify_html
-from jinja2 import BaseLoader, Environment
+from jinja2 import Environment, PackageLoader
 
 from roadmark.models import Roadmap
 
@@ -54,11 +54,8 @@ def render(roadmap: Roadmap, style: str = DEFAULT_STYLE) -> str:
         ValueError: If the style name is not recognised.
     """
     css = load_style(style)
-    template_text = (
-        files("roadmark.templates").joinpath("roadmap.html.jinja2").read_text()
-    )
-    env = Environment(loader=BaseLoader(), autoescape=True)
-    template = env.from_string(template_text)
+    env = Environment(loader=PackageLoader("roadmark", "templates"), autoescape=True)
+    template = env.get_template("roadmap.html.jinja2")
     return template.render(roadmap=roadmap, styles=css)
 
 
@@ -80,10 +77,7 @@ def render_fragment(roadmap: Roadmap, style: str = DEFAULT_STYLE) -> str:
         ValueError: If the style name is not recognised.
     """
     css = load_style(style)
-    template_text = (
-        files("roadmark.templates").joinpath("roadmap.fragment.html.jinja2").read_text()
-    )
-    env = Environment(loader=BaseLoader(), autoescape=True)
-    template = env.from_string(template_text)
+    env = Environment(loader=PackageLoader("roadmark", "templates"), autoescape=True)
+    template = env.get_template("roadmap.fragment.html.jinja2")
     html = template.render(roadmap=roadmap, styles=css)
     return minify_html.minify(html, minify_css=True)
