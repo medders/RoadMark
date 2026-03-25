@@ -141,9 +141,7 @@ def render_confluence(roadmap: Roadmap) -> str:
         parts.append(f"<p>{' &nbsp;|&nbsp; '.join(meta)}</p>")
 
     if fm.summary:
-        # Preserve newlines as <br/> so multi-line YAML block scalars render nicely
-        safe = _prose(fm.summary.strip()).replace("\n", "<br/>")
-        parts.append(f"<p>{safe}</p>")
+        parts.append(f"<p>{_prose(fm.summary.strip())}</p>")
 
     if fm.edit_link:
         label = fm.edit_link_text or "Edit"
