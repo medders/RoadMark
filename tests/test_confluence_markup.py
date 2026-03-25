@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from roadmark.confluence_markup import _card, _status_macro, render_confluence
+from roadmark.confluence_markup import _card, _prose, _status_macro, render_confluence
 from roadmark.models import Column, FrontMatter, Roadmap, Theme
 
 FIXTURES = Path(__file__).parent.parent / "examples"
@@ -32,6 +32,34 @@ def _simple_roadmap() -> Roadmap:
             Column(name="Later", themes=[]),
         ],
     )
+
+
+class TestProse:
+    def test_plain_text_escaped(self) -> None:
+        assert _prose("hello <world>") == "hello &lt;world&gt;"
+
+    def test_mention_expands_to_user_macro(self) -> None:
+        out = _prose("contact @admin for access")
+        assert '<ri:user ri:username="admin"/>' in out
+        assert "@admin" not in out
+
+    def test_mention_at_start_of_string(self) -> None:
+        out = _prose("@alice owns this")
+        assert '<ri:user ri:username="alice"/>' in out
+
+    def test_no_match_inside_email(self) -> None:
+        out = _prose("email user@example.com here")
+        assert "ri:user" not in out
+        assert "user@example.com" in out
+
+    def test_multiple_mentions(self) -> None:
+        out = _prose("@alice and @bob are reviewing")
+        assert 'ri:username="alice"' in out
+        assert 'ri:username="bob"' in out
+
+    def test_mention_with_dots_and_hyphens(self) -> None:
+        out = _prose("ask @jane.doe-smith")
+        assert 'ri:username="jane.doe-smith"' in out
 
 
 class TestStatusMacro:

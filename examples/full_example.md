@@ -8,7 +8,7 @@ last_updated: 2026-03-21
 summary: |
   This quarter we're focused on reliability and developer experience.
   The gateway upgrade and auth refactor are our top priorities;
-  observability work unblocks both of them.
+  observability work unblocks both of them. Owner: @admin
 ---
 
 ## Now
@@ -23,7 +23,7 @@ summary: |
 - target: Q2 2026
 - stakeholders:
   - CTO
-  - Head of Engineering
+  - @admin
 - components:
   - API
   - Gateway

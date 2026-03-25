@@ -3,8 +3,12 @@
 from __future__ import annotations
 
 import html
+import re
 
 from roadmark.models import ConfidenceT, Roadmap, StatusT, Theme
+
+# Matches @username in prose; negative lookbehind avoids matching inside emails.
+_MENTION_RE = re.compile(r"(?<!\w)@([A-Za-z0-9._-]+)")
 
 # ── Column colour scheme ──────────────────────────────────────────────────────
 _COL_HDR_BG = {"Now": "#d1fae5", "Next": "#dbeafe", "Later": "#fef3c7"}
@@ -28,6 +32,17 @@ _CONF_COLOUR: dict[ConfidenceT, str] = {
 
 def _e(text: str) -> str:
     return html.escape(str(text))
+
+
+def _prose(text: str) -> str:
+    """Escape *text* and expand @username mentions into Confluence user-link macros."""
+    escaped = html.escape(str(text))
+    return _MENTION_RE.sub(
+        lambda m: (
+            f'<ac:link><ri:user ri:username="{html.escape(m.group(1))}"/></ac:link>'
+        ),
+        escaped,
+    )
 
 
 def _status_macro(label: str, colour: str) -> str:
@@ -56,18 +71,17 @@ def _card(theme: Theme, col_name: str) -> str:
         )
 
     if theme.summary:
-        body_parts.append(f"<p>{_e(theme.summary)}</p>")
+        body_parts.append(f"<p>{_prose(theme.summary)}</p>")
 
     if theme.objectives:
-        items = "".join(f"<li>{_e(o)}</li>" for o in theme.objectives)
+        items = "".join(f"<li>{_prose(o)}</li>" for o in theme.objectives)
         body_parts.append(f"<ul>{items}</ul>")
 
     if theme.target:
         body_parts.append(f"<p><strong>Target:</strong> {_e(theme.target)}</p>")
     if theme.stakeholders:
-        body_parts.append(
-            f"<p><strong>Stakeholders:</strong> {_e(', '.join(theme.stakeholders))}</p>"
-        )
+        stakeholders = ", ".join(_prose(s) for s in theme.stakeholders)
+        body_parts.append(f"<p><strong>Stakeholders:</strong> {stakeholders}</p>")
     if theme.components:
         body_parts.append(
             f"<p><strong>Components:</strong> {_e(', '.join(theme.components))}</p>"
@@ -120,13 +134,15 @@ def render_confluence(roadmap: Roadmap) -> str:
         else:
             meta.append(f"<strong>Team:</strong> {_e(fm.team)}")
     if fm.last_updated:
-        meta.append(f"<strong>Last updated:</strong> {_e(fm.last_updated)}")
+        meta.append(
+            f'<strong>Last updated:</strong> <time datetime="{_e(fm.last_updated)}" />'
+        )
     if meta:
         parts.append(f"<p>{' &nbsp;|&nbsp; '.join(meta)}</p>")
 
     if fm.summary:
         # Preserve newlines as <br/> so multi-line YAML block scalars render nicely
-        safe = _e(fm.summary.strip()).replace("\n", "<br/>")
+        safe = _prose(fm.summary.strip()).replace("\n", "<br/>")
         parts.append(f"<p>{safe}</p>")
 
     if fm.edit_link:
