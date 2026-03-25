@@ -119,8 +119,30 @@ def _card(theme: Theme, col_name: str) -> str:
     )
 
 
-def render_confluence(roadmap: Roadmap) -> str:
-    """Render a Roadmap as a Confluence Storage Format XML string."""
+def _do_not_edit_banner(edit_link: str | None, edit_link_text: str | None) -> str:
+    if edit_link:
+        label = _e(edit_link_text or "Edit source")
+        link_fragment = f' <a href="{_e(edit_link)}">{label}</a>.'
+    else:
+        link_fragment = " Re-publish it with <code>roadmark publish</code> to update."
+    body = (
+        f"<p>This page is auto-generated. Do not edit it directly.{link_fragment}</p>"
+    )
+    return (
+        '<ac:structured-macro ac:name="info" ac:schema-version="1">'
+        '<ac:parameter ac:name="title">Do not edit this page directly</ac:parameter>'
+        f"<ac:rich-text-body>{body}</ac:rich-text-body>"
+        "</ac:structured-macro>"
+    )
+
+
+def render_confluence(roadmap: Roadmap, *, excerpt: bool = False) -> str:
+    """Render a Roadmap as a Confluence Storage Format XML string.
+
+    When *excerpt* is True the roadmap body is wrapped in a Confluence
+    ``excerpt`` macro (so other pages can transclude it) and a "do not edit"
+    info banner is placed before the macro.
+    """
     fm = roadmap.front_matter
     parts: list[str] = []
 
@@ -186,4 +208,18 @@ def render_confluence(roadmap: Roadmap) -> str:
         f"</tbody></table>"
     )
 
-    return "\n".join(parts)
+    body = "\n".join(parts)
+
+    if not excerpt:
+        return body
+
+    excerpt_macro = (
+        '<ac:structured-macro ac:name="excerpt" ac:schema-version="1">'
+        f"<ac:rich-text-body>{body}</ac:rich-text-body>"
+        "</ac:structured-macro>"
+    )
+    banner = _do_not_edit_banner(
+        str(fm.edit_link) if fm.edit_link else None,
+        fm.edit_link_text,
+    )
+    return f"{banner}\n{excerpt_macro}"

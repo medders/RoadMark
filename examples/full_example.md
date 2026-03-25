@@ -5,6 +5,8 @@ owner: Jane Smith
 team: Platform Team
 team_link: https://example.com/platform
 last_updated: 2026-03-21
+edit_link: https://github.com/your-org/your-repo/edit/main/examples/full_example.md
+edit_link_text: Edit on GitHub
 summary: |
   This quarter we're focused on reliability and developer experience.
   The gateway upgrade and auth refactor are our top priorities;

@@ -133,6 +133,16 @@ def build(input_file: Path, output: Path | None) -> None:
     default=None,
     help="Title of an existing page to nest this page under.",
 )
+@click.option(
+    "--as-excerpt",
+    "excerpt",
+    is_flag=True,
+    default=False,
+    help=(
+        "Wrap the roadmap in a Confluence excerpt macro (for transclusion) "
+        "and prepend a 'do not edit' banner."
+    ),
+)
 def publish(
     input_file: Path,
     url: str,
@@ -140,6 +150,7 @@ def publish(
     token: str,
     title: str | None,
     parent: str | None,
+    excerpt: bool,
 ) -> None:
     """Publish INPUT_FILE to Confluence as a native storage-format page.
 
@@ -165,7 +176,7 @@ def publish(
             "No title found. Set one in frontmatter or pass --title."
         )
 
-    markup = render_confluence(roadmap)
+    markup = render_confluence(roadmap, excerpt=excerpt)
     client = ConfluenceClient(base_url=url, token=token)
 
     try:

@@ -233,3 +233,48 @@ class TestRenderConfluence:
         out = render_confluence(roadmap)
         assert isinstance(out, str)
         assert len(out) > 100
+
+
+class TestExcerptMode:
+    def test_excerpt_wraps_body_in_macro(self) -> None:
+        roadmap = _simple_roadmap()
+        out = render_confluence(roadmap, excerpt=True)
+        assert 'ac:name="excerpt"' in out
+        assert "Test Roadmap" in out
+
+    def test_excerpt_prepends_do_not_edit_banner(self) -> None:
+        roadmap = _simple_roadmap()
+        out = render_confluence(roadmap, excerpt=True)
+        assert 'ac:name="info"' in out
+        assert "Do not edit this page directly" in out
+
+    def test_banner_includes_edit_link_when_present(self) -> None:
+        roadmap = Roadmap(
+            front_matter=FrontMatter(
+                title="T",
+                edit_link="https://github.com/org/repo/edit/main/roadmap.md",  # type: ignore[arg-type]
+                edit_link_text="GitHub",
+            ),
+            columns=[],
+        )
+        out = render_confluence(roadmap, excerpt=True)
+        assert "https://github.com/org/repo/edit/main/roadmap.md" in out
+        assert ">GitHub<" in out
+
+    def test_banner_no_edit_link_shows_fallback(self) -> None:
+        roadmap = Roadmap(front_matter=FrontMatter(title="T"), columns=[])
+        out = render_confluence(roadmap, excerpt=True)
+        assert "roadmark publish" in out
+
+    def test_banner_before_excerpt_macro(self) -> None:
+        roadmap = _simple_roadmap()
+        out = render_confluence(roadmap, excerpt=True)
+        banner_pos = out.index('ac:name="info"')
+        excerpt_pos = out.index('ac:name="excerpt"')
+        assert banner_pos < excerpt_pos
+
+    def test_no_excerpt_flag_returns_plain_body(self) -> None:
+        roadmap = _simple_roadmap()
+        out = render_confluence(roadmap)
+        assert 'ac:name="excerpt"' not in out
+        assert 'ac:name="info"' not in out
