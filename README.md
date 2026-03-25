@@ -1,8 +1,11 @@
 # RoadMark
 
-Generate attractive **Now / Next / Later** roadmaps from a single markdown file.
+Generate **Now / Next / Later** roadmaps from a single markdown file.
 
-RoadMark takes a structured `.md` file and outputs a self-contained HTML page — no build pipeline, no backend, no login. Open it in a browser, attach it to an email, or drop it on a static host.
+RoadMark takes a structured `.md` file and outputs:
+
+- A **self-contained HTML page** for local preview, email attachments, or static hosting.
+- A **Confluence page** published directly via the REST API using native Storage Format — no macros, no attachments required.
 
 ---
 
@@ -38,35 +41,42 @@ Generates a `roadmap.md` file in the current directory with all supported fields
 roadmark init my-roadmap.md
 ```
 
-### Build
+### Build (HTML preview)
 
 ```bash
 roadmark build my-roadmap.md
 ```
 
-Outputs `my-roadmap.html` alongside the input file.
-
-To specify an output path:
+Outputs `my-roadmap.html` alongside the input file. To specify an output path:
 
 ```bash
 roadmark build my-roadmap.md --output /path/to/output.html
 ```
 
-To use a different visual style:
+### Publish to Confluence
 
 ```bash
-roadmark build my-roadmap.md --style polished
+roadmark publish my-roadmap.md \
+    --url https://confluence.example.com \
+    --space MYSPACE \
+    --token $CONFLUENCE_TOKEN
 ```
 
-RoadMark ships with 11 built-in themes. See [docs/themes.md](docs/themes.md) for a visual preview of each one.
+Creates the page if it doesn't exist; updates it if it does. The page title defaults to the roadmap's `title` frontmatter field; override it with `--title`.
 
-To generate an HTML fragment for pasting into a Confluence HTML macro:
+To nest the page under an existing parent:
 
 ```bash
-roadmark build my-roadmap.md --fragment
+roadmark publish my-roadmap.md --url ... --space ... --token ... --parent "Team Home"
 ```
 
-Outputs `my-roadmap.fragment.html`. Paste the file contents directly into the Confluence HTML macro.
+To wrap the roadmap in a Confluence [excerpt macro](https://confluence.atlassian.com/doc/excerpt-macro-148062.html) so other pages can transclude it, and prepend a "do not edit" banner:
+
+```bash
+roadmark publish my-roadmap.md --url ... --space ... --token ... --as-excerpt
+```
+
+The `--token` flag reads from the `CONFLUENCE_TOKEN` environment variable if not passed directly.
 
 ### Lint
 
@@ -86,10 +96,12 @@ RoadMark uses a single markdown file with YAML frontmatter for roadmap-level met
 ---
 title: Platform Roadmap
 description: Roadmap for the platform team
-owner: Jane Smith
+owner: "@admin"
 team: Platform Team
 team_link: https://example.com/platform
 last_updated: 2026-03-21
+edit_link: https://github.com/your-org/your-repo/edit/main/roadmap.md
+edit_link_text: Edit on GitHub
 summary: |
   This quarter we're focused on reliability and developer experience.
 ---
@@ -104,9 +116,10 @@ summary: |
 - status: in-progress
 - confidence: committed
 - target: Q2 2026
-- stakeholders: CTO, Head of Engineering
+- stakeholders: CTO, @alice
 - components: API, Gateway
-- link: https://jira.example.com/epic/101
+- jira: PLAT-101
+- link: https://example.com/wiki/api-gateway-upgrade
 
 ## Next
 
@@ -156,11 +169,10 @@ uv run pre-commit install --hook-type pre-commit --hook-type commit-msg
 uv run pytest
 ```
 
-### Linting and formatting
+### Linting, formatting, and type checking
 
 ```bash
-uv run ruff check .
-uv run ruff format .
+uv run pre-commit run --all-files
 ```
 
 ### Committing

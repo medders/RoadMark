@@ -37,11 +37,13 @@ The keywords **must**, **must not**, **should**, **may**, and **optional** are u
 |---|---|---|---|
 | `title` | Yes | string | Roadmap title, shown in the header. |
 | `description` | No | string | Short subtitle, shown below the title. |
-| `owner` | No | string | Roadmap owner's name. |
+| `owner` | No | string | Roadmap owner's name. Supports `@mention` expansion (see below). |
 | `team` | No | string | Team name. |
 | `team_link` | No | URL | URL wrapping the team name as a hyperlink. |
-| `last_updated` | No | string | Date shown in the header and footer (e.g. `2026-03-21`). |
-| `summary` | No | string | Freeform context paragraph shown above the board. Supports multi-line YAML block scalar (`summary: \|`). |
+| `last_updated` | No | string | Date shown in the header (e.g. `2026-03-21`). Rendered as a Confluence date element when published. |
+| `summary` | No | string | Freeform context paragraph shown above the board. Supports multi-line YAML block scalar (`summary: \|`) and `@mention` expansion. |
+| `edit_link` | No | URL | URL to the source file for editing (e.g. a GitHub edit link). Shown as a footer link in HTML; shown in the "do not edit" banner when publishing with `--as-excerpt`. |
+| `edit_link_text` | No | string | Label for the `edit_link` anchor. Defaults to `"Edit"`. |
 
 ### Columns
 
@@ -62,14 +64,15 @@ The keywords **must**, **must not**, **should**, **may**, and **optional** are u
 
 | Field | Value | Description |
 |---|---|---|
-| `summary` | string | One-sentence description of the theme, shown below the title. |
+| `summary` | string | One-sentence description of the theme, shown below the title. Supports `@mention` expansion (see below). |
 | `objectives` | string or list | Measurable outcomes. See [multi-value fields](#multi-value-fields). |
 | `status` | see below | Current state of the theme. |
 | `confidence` | see below | Delivery confidence level. |
 | `target` | string | Free-form target date or quarter (e.g. `Q2 2026`, `H1`, `June`). |
-| `stakeholders` | string or list | People with a stake in this theme. See [multi-value fields](#multi-value-fields). |
+| `stakeholders` | string or list | People with a stake in this theme. Supports `@mention` expansion. See [multi-value fields](#multi-value-fields). |
 | `components` | string or list | Technical areas or system components involved. See [multi-value fields](#multi-value-fields). |
-| `link` | URL | Link to an external tracker (Jira, Linear, GitHub, etc.), rendered as "View details". |
+| `jira` | string | JIRA issue key for the associated epic (e.g. `PLAT-101`). Rendered as a JIRA macro when published to Confluence. |
+| `link` | URL | Link to additional context (wiki page, design doc, etc.), rendered as "View details ↗". |
 
 #### `status` values
 
@@ -97,6 +100,18 @@ An invalid `status` value produces a **warning** and the field is left unset. It
 | `exploring` | The need is understood but the approach and timing are uncertain. |
 
 An invalid `confidence` value produces a **warning** and the field is left unset. It does not cause an error.
+
+#### `@mention` expansion
+
+In the `owner`, `summary`, and `stakeholders` fields, values of the form `@username` are expanded into user mentions when published to Confluence. In HTML output they are rendered as plain text.
+
+```markdown
+owner: "@admin"
+- stakeholders: "@alice, @bob"
+- summary: Contact @alice for access requests.
+```
+
+Note: quote `owner` values starting with `@` in YAML to avoid parsing ambiguity.
 
 #### Multi-value fields
 
@@ -158,9 +173,10 @@ title: My Roadmap
 - status: in-progress
 - confidence: committed
 - target: Q2 2026
-- stakeholders: CTO, Head of Engineering
+- stakeholders: CTO, @alice
 - components: API, Gateway
-- link: https://jira.example.com/epic/101
+- jira: PLAT-101
+- link: https://example.com/wiki/api-gateway-upgrade
 ```
 
 ### Intentionally sparse Later item
@@ -193,6 +209,7 @@ See [`examples/full_example.md`](../examples/full_example.md).
 | A theme has no `status` | Warning |
 | A `blocked` theme has no `summary` or `objectives` | Warning |
 | Invalid `status` or `confidence` value | Warning |
+| `jira` value does not match `PROJECT-123` format | Warning |
 | Unrecognised field key | Warning |
 
 Run with `--strict` to treat warnings as errors:
