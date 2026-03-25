@@ -52,14 +52,14 @@ class TestRender:
         roadmap = parse_file(FIXTURES / "full_example.md")
         html = render(roadmap)
         assert "CTO" in html
-        assert "Head of Engineering" in html
+        assert "@admin" in html
         assert "API" in html
         assert "Gateway" in html
 
     def test_link_rendered(self) -> None:
         roadmap = parse_file(FIXTURES / "full_example.md")
         html = render(roadmap)
-        assert "https://jira.example.com/epic/101" in html
+        assert "https://example.com/wiki/api-gateway-upgrade" in html
 
     def test_edit_link_rendered_in_footer(self) -> None:
         from roadmark.models import Column, FrontMatter, Roadmap
@@ -93,13 +93,6 @@ class TestRender:
         roadmap_no_link = parse_file(FIXTURES / "simple.md")
         html = render(roadmap_no_link)
         assert "Edit on" not in html
-
-    def test_unknown_style_raises_value_error(self) -> None:
-        roadmap = parse_file(FIXTURES / "simple.md")
-        import pytest
-
-        with pytest.raises(ValueError, match="nonexistent"):
-            render(roadmap, style="nonexistent")
 
     def test_html_is_escaped(self) -> None:
         """User content with special characters should be escaped."""

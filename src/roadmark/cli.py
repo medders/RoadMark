@@ -8,7 +8,7 @@ from roadmark.confluence import ConfluenceClient, ConfluenceError
 from roadmark.confluence_markup import render_confluence
 from roadmark.linter import Severity, lint
 from roadmark.parser import ParseError, parse_file
-from roadmark.renderer import DEFAULT_STYLE, list_styles, render, render_fragment
+from roadmark.renderer import render
 
 _INIT_TEMPLATE = """\
 ---
@@ -75,38 +75,20 @@ def cli() -> None:
     default=None,
     help=(
         "Output file path. Extension determines format: "
-        ".html (default), .fragment.html (Confluence HTML macro), "
-        ".confluence (Confluence storage format)."
+        ".html (default local preview), .confluence (Confluence Storage Format)."
     ),
 )
-@click.option(
-    "--style",
-    "-s",
-    default=DEFAULT_STYLE,
-    show_default=True,
-    help=(
-        f"CSS style to apply (HTML output only). Available: {', '.join(list_styles())}."
-    ),
-)
-@click.option(
-    "--fragment",
-    is_flag=True,
-    default=False,
-    help="Output an HTML fragment for pasting into a Confluence HTML macro.",
-)
-def build(input_file: Path, output: Path | None, style: str, fragment: bool) -> None:
+def build(input_file: Path, output: Path | None) -> None:
     """Build a roadmap from INPUT_FILE.
 
     Output format is determined by the --output file extension:
 
     \b
-      .html              Full standalone HTML page (default)
-      .fragment.html     HTML fragment for the Confluence HTML macro
+      .html              Standalone HTML page for local preview (default)
       .confluence        Confluence Storage Format for direct API upload
     """
     if output is None:
-        suffix = ".fragment.html" if fragment else ".html"
-        output = input_file.with_suffix(suffix)
+        output = input_file.with_suffix(".html")
 
     try:
         roadmap = parse_file(input_file)
@@ -122,21 +104,9 @@ def build(input_file: Path, output: Path | None, style: str, fragment: bool) -> 
         click.echo(f"Confluence markup written to {output}")
         return
 
-    try:
-        html = (
-            render_fragment(roadmap, style=style)
-            if fragment
-            else render(roadmap, style=style)
-        )
-    except ValueError as exc:
-        raise click.ClickException(str(exc)) from exc
-
+    html = render(roadmap)
     output.write_text(html, encoding="utf-8")
-    if fragment:
-        click.echo(f"Fragment written to {output}")
-        click.echo("Paste the file contents into the Confluence HTML macro.")
-    else:
-        click.echo(f"Roadmap written to {output} (style: {style})")
+    click.echo(f"Roadmap written to {output}")
 
 
 @cli.command()
