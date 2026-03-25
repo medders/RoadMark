@@ -154,7 +154,7 @@ def render_confluence(roadmap: Roadmap, *, excerpt: bool = False) -> str:
     # Metadata bar
     meta: list[str] = []
     if fm.owner:
-        meta.append(f"<strong>Owner:</strong> {_e(fm.owner)}")
+        meta.append(f"<strong>Owner:</strong> {_prose(fm.owner)}")
     if fm.team:
         if fm.team_link:
             meta.append(

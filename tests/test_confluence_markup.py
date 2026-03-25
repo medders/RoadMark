@@ -181,6 +181,15 @@ class TestRenderConfluence:
         assert "Platform" in out
         assert "2026-03-25" in out
 
+    def test_owner_mention_expanded(self) -> None:
+        roadmap = Roadmap(
+            front_matter=FrontMatter(title="T", owner="@alice"),
+            columns=[],
+        )
+        out = render_confluence(roadmap)
+        assert 'ri:username="alice"' in out
+        assert "@alice" not in out
+
     def test_summary_rendered(self) -> None:
         roadmap = Roadmap(
             front_matter=FrontMatter(title="T", summary="Context paragraph."),

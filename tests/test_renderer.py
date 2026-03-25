@@ -38,7 +38,7 @@ class TestRender:
         roadmap = parse_file(FIXTURES / "full_example.md")
         html = render(roadmap)
         assert "Platform Roadmap" in html
-        assert "Jane Smith" in html
+        assert "@admin" in html
         assert "Platform Team" in html
         assert "2026-03-21" in html
 

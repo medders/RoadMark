@@ -19,7 +19,7 @@ class TestFrontMatter:
         fm = roadmap.front_matter
         assert fm.title == "Platform Roadmap"
         assert fm.description == "Roadmap for the platform team"
-        assert fm.owner == "Jane Smith"
+        assert fm.owner == "@admin"
         assert fm.team == "Platform Team"
         assert str(fm.team_link) == "https://example.com/platform"
         assert fm.last_updated == "2026-03-21"

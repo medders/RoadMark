@@ -1,7 +1,7 @@
 ---
 title: Platform Roadmap
 description: Roadmap for the platform team
-owner: Jane Smith
+owner: "@admin"
 team: Platform Team
 team_link: https://example.com/platform
 last_updated: 2026-03-21
@@ -10,7 +10,7 @@ edit_link_text: Edit on GitHub
 summary: |
   This quarter we're focused on reliability and developer experience.
   The gateway upgrade and auth refactor are our top priorities;
-  observability work unblocks both of them. Owner: @admin
+  observability work unblocks both of them.
 ---
 
 ## Now
