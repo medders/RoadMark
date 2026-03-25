@@ -27,7 +27,8 @@ summary: |
 - components:
   - API
   - Gateway
-- link: https://jira.example.com/epic/101
+- jira: PLAT-101
+- link: https://example.com/wiki/api-gateway-upgrade
 
 ### Auth Refactor
 - summary: Migrate session tokens to a compliant storage mechanism.

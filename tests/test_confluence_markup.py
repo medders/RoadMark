@@ -83,10 +83,23 @@ class TestCard:
         assert "<li>Goal A</li>" in out
         assert "<li>Goal B</li>" in out
 
-    def test_link_rendered(self) -> None:
+    def test_link_plain_url(self) -> None:
         theme = Theme(name="X", link="https://example.com/123")  # type: ignore[arg-type]
         out = _card(theme, "Now")
         assert 'href="https://example.com/123"' in out
+        assert 'ac:name="jira"' not in out
+
+    def test_jira_field_renders_macro(self) -> None:
+        theme = Theme(name="X", jira="PROJ-42")
+        out = _card(theme, "Now")
+        assert 'ac:name="jira"' in out
+        assert ">PROJ-42<" in out
+
+    def test_jira_and_link_both_render(self) -> None:
+        theme = Theme(name="X", jira="PROJ-1", link="https://example.com/wiki")  # type: ignore[arg-type]
+        out = _card(theme, "Now")
+        assert 'ac:name="jira"' in out
+        assert 'href="https://example.com/wiki"' in out
 
     def test_no_optional_fields(self) -> None:
         theme = Theme(name="Minimal")

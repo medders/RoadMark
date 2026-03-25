@@ -1,9 +1,12 @@
 """Roadmap quality linter."""
 
+import re
 from dataclasses import dataclass, field
 from enum import StrEnum
 
 from roadmark.models import Roadmap
+
+_JIRA_KEY_RE = re.compile(r"^[A-Z][A-Z0-9]*-\d+$")
 
 
 class Severity(StrEnum):
@@ -118,5 +121,15 @@ def _check_themes(roadmap: Roadmap, result: LintResult) -> None:
                         Severity.WARNING,
                         loc,
                         "Theme is missing a confidence level",
+                    )
+                )
+
+            if theme.jira is not None and not _JIRA_KEY_RE.match(theme.jira):
+                result.issues.append(
+                    Issue(
+                        Severity.WARNING,
+                        loc,
+                        f"jira value {theme.jira!r} does not look like an issue key"
+                        " (expected format: PROJ-123)",
                     )
                 )

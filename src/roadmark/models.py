@@ -30,6 +30,7 @@ class Theme(BaseModel):
     stakeholders: list[str] = []
     components: list[str] = []
     link: HttpUrl | None = None
+    jira: str | None = None
     status: StatusT | None = None
     confidence: ConfidenceT | None = None
     target: str | None = None

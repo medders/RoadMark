@@ -105,9 +105,14 @@
           </div>
           {% endif %}
 
-          {% if theme.link %}
+          {% if theme.link or theme.jira %}
           <div class="card__link">
+            {% if theme.jira %}
+            <span class="card__jira">{{ theme.jira }}</span>
+            {% endif %}
+            {% if theme.link %}
             <a href="{{ theme.link }}" target="_blank" rel="noopener">&#8599; View details</a>
+            {% endif %}
           </div>
           {% endif %}
 

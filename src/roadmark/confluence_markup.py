@@ -72,6 +72,12 @@ def _card(theme: Theme, col_name: str) -> str:
         body_parts.append(
             f"<p><strong>Components:</strong> {_e(', '.join(theme.components))}</p>"
         )
+    if theme.jira:
+        body_parts.append(
+            f'<p><ac:structured-macro ac:name="jira" ac:schema-version="1">'
+            f'<ac:parameter ac:name="key">{_e(theme.jira)}</ac:parameter>'
+            f"</ac:structured-macro></p>"
+        )
     if theme.link:
         body_parts.append(
             f'<p><a href="{_e(str(theme.link))}">View details \u2197</a></p>'

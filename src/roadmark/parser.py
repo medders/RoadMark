@@ -132,6 +132,7 @@ _KNOWN_KEYS = frozenset(
         "components",
         "component",
         "link",
+        "jira",
         "status",
         "confidence",
         "target",
@@ -231,6 +232,11 @@ def _parse_theme_list(
             value = raw_text[len("link:") :].strip()
             if value:
                 theme.link = value  # type: ignore[assignment]
+
+        elif raw_text.lower().startswith("jira:"):
+            value = raw_text[len("jira:") :].strip()
+            if value:
+                theme.jira = value
 
         elif raw_text.lower().startswith("status:"):
             value = raw_text[len("status:") :].strip().lower()
