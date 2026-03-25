@@ -159,11 +159,12 @@ class TestRenderConfluence:
         out = render_confluence(roadmap)
         assert "Platform Reliability" in out
 
-    def test_item_count_in_header(self) -> None:
+    def test_column_names_in_header(self) -> None:
         roadmap = _simple_roadmap()
         out = render_confluence(roadmap)
-        assert "1 item</span>" in out  # Now column
-        assert "0 items</span>" in out  # Later column
+        assert "NOW" in out
+        assert "NEXT" in out
+        assert "LATER" in out
 
     def test_metadata_bar(self) -> None:
         roadmap = Roadmap(

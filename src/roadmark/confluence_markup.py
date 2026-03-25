@@ -11,7 +11,7 @@ from roadmark.models import ConfidenceT, Roadmap, StatusT, Theme
 _MENTION_RE = re.compile(r"(?<!\w)@([A-Za-z0-9._-]+)")
 
 # ── Column colour scheme ──────────────────────────────────────────────────────
-_COL_HDR_BG = {"Now": "#d1fae5", "Next": "#dbeafe", "Later": "#fef3c7"}
+_COL_HDR_BG = {"Now": "#6ee7b7", "Next": "#93c5fd", "Later": "#fcd34d"}
 _COL_HDR_FG = {"Now": "#065f46", "Next": "#1e3a8a", "Later": "#78350f"}
 _PANEL_BORDER = {"Now": "#059669", "Next": "#2563eb", "Later": "#d97706"}
 _PANEL_TITLE_BG = {"Now": "#ecfdf5", "Next": "#eff6ff", "Later": "#fffbeb"}
@@ -60,15 +60,23 @@ def _card(theme: Theme, col_name: str) -> str:
 
     body_parts: list[str] = []
 
-    # Status and confidence — label embedded in the badge title
+    # Status and confidence on one line
+    badges: list[str] = []
     if theme.status:
-        colour = _STATUS_COLOUR.get(theme.status, "Grey")
-        body_parts.append(f"<p>{_status_macro(f'Status: {theme.status}', colour)}</p>")
-    if theme.confidence:
-        colour = _CONF_COLOUR.get(theme.confidence, "Grey")
-        body_parts.append(
-            f"<p>{_status_macro(f'Confidence: {theme.confidence}', colour)}</p>"
+        badges.append(
+            _status_macro(
+                f"Status: {theme.status}", _STATUS_COLOUR.get(theme.status, "Grey")
+            )
         )
+    if theme.confidence:
+        badges.append(
+            _status_macro(
+                f"Confidence: {theme.confidence}",
+                _CONF_COLOUR.get(theme.confidence, "Grey"),
+            )
+        )
+    if badges:
+        body_parts.append(f"<p>{'&#160;'.join(badges)}</p>")
 
     if theme.summary:
         body_parts.append(f"<p>{_prose(theme.summary)}</p>")
@@ -158,14 +166,10 @@ def render_confluence(roadmap: Roadmap) -> str:
     for col in roadmap.columns:
         bg = _COL_HDR_BG.get(col.name, "#f3f4f6")
         fg = _COL_HDR_FG.get(col.name, "#374151")
-        count = len(col.themes)
-        plural = "s" if count != 1 else ""
         header_cells += (
             f'<th style="text-align:center;background-color:{bg};color:{fg};'
             f'padding:10px;font-size:14px;">'
             f"<strong>{_e(col.name.upper())}</strong>"
-            f'<br/><span style="font-size:11px;font-weight:normal;">'
-            f"{count} item{plural}</span>"
             f"</th>"
         )
 
