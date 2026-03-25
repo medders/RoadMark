@@ -4,6 +4,8 @@ from pathlib import Path
 
 import click
 
+from roadmark.confluence import ConfluenceClient, ConfluenceError
+from roadmark.confluence_markup import render_confluence
 from roadmark.linter import Severity, lint
 from roadmark.parser import ParseError, parse_file
 from roadmark.renderer import DEFAULT_STYLE, list_styles, render, render_fragment
@@ -35,7 +37,8 @@ summary: |
 - target: Q2 2026
 - stakeholder: Jane Doe
 - component: API
-- link: https://example.com/epic/123
+- jira: PROJ-123
+- link: https://example.com/wiki/theme-details
 
 ## Next
 
@@ -70,14 +73,20 @@ def cli() -> None:
     "-o",
     type=click.Path(dir_okay=False, path_type=Path),
     default=None,
-    help="Output HTML file path. Defaults to <input>.html.",
+    help=(
+        "Output file path. Extension determines format: "
+        ".html (default), .fragment.html (Confluence HTML macro), "
+        ".confluence (Confluence storage format)."
+    ),
 )
 @click.option(
     "--style",
     "-s",
     default=DEFAULT_STYLE,
     show_default=True,
-    help=f"CSS style to apply. Available: {', '.join(list_styles())}.",
+    help=(
+        f"CSS style to apply (HTML output only). Available: {', '.join(list_styles())}."
+    ),
 )
 @click.option(
     "--fragment",
@@ -86,7 +95,15 @@ def cli() -> None:
     help="Output an HTML fragment for pasting into a Confluence HTML macro.",
 )
 def build(input_file: Path, output: Path | None, style: str, fragment: bool) -> None:
-    """Build an HTML roadmap from INPUT_FILE."""
+    """Build a roadmap from INPUT_FILE.
+
+    Output format is determined by the --output file extension:
+
+    \b
+      .html              Full standalone HTML page (default)
+      .fragment.html     HTML fragment for the Confluence HTML macro
+      .confluence        Confluence Storage Format for direct API upload
+    """
     if output is None:
         suffix = ".fragment.html" if fragment else ".html"
         output = input_file.with_suffix(suffix)
@@ -98,6 +115,12 @@ def build(input_file: Path, output: Path | None, style: str, fragment: bool) -> 
 
     for warning in roadmap.parse_warnings:
         click.echo(click.style(f"Warning: {warning}", fg="yellow"), err=True)
+
+    if output.suffix == ".confluence":
+        markup = render_confluence(roadmap)
+        output.write_text(markup, encoding="utf-8")
+        click.echo(f"Confluence markup written to {output}")
+        return
 
     try:
         html = (
@@ -114,6 +137,78 @@ def build(input_file: Path, output: Path | None, style: str, fragment: bool) -> 
         click.echo("Paste the file contents into the Confluence HTML macro.")
     else:
         click.echo(f"Roadmap written to {output} (style: {style})")
+
+
+@cli.command()
+@click.argument(
+    "input_file", type=click.Path(exists=True, dir_okay=False, path_type=Path)
+)
+@click.option(
+    "--url",
+    required=True,
+    help="Confluence base URL, e.g. https://confluence.example.com",
+)
+@click.option("--space", required=True, help="Space key, e.g. MYSPACE")
+@click.option(
+    "--token",
+    required=True,
+    envvar="CONFLUENCE_TOKEN",
+    help="Personal access token (or set CONFLUENCE_TOKEN).",
+)
+@click.option(
+    "--title", default=None, help="Page title. Defaults to frontmatter title."
+)
+@click.option(
+    "--parent",
+    default=None,
+    help="Title of an existing page to nest this page under.",
+)
+def publish(
+    input_file: Path,
+    url: str,
+    space: str,
+    token: str,
+    title: str | None,
+    parent: str | None,
+) -> None:
+    """Publish INPUT_FILE to Confluence as a native storage-format page.
+
+    Creates the page if it doesn't exist; updates it if it does.
+
+    Example:
+
+        roadmark publish my-roadmap.md \\
+            --url https://confluence.example.com \\
+            --space MYSPACE --token $CONFLUENCE_TOKEN
+    """
+    try:
+        roadmap = parse_file(input_file)
+    except ParseError as exc:
+        raise click.ClickException(str(exc)) from exc
+
+    for warning in roadmap.parse_warnings:
+        click.echo(click.style(f"Warning: {warning}", fg="yellow"), err=True)
+
+    page_title = title or roadmap.front_matter.title
+    if not page_title:
+        raise click.ClickException(
+            "No title found. Set one in frontmatter or pass --title."
+        )
+
+    markup = render_confluence(roadmap)
+    client = ConfluenceClient(base_url=url, token=token)
+
+    try:
+        page_url = client.publish(
+            space_key=space,
+            title=page_title,
+            body=markup,
+            parent_title=parent,
+        )
+    except ConfluenceError as exc:
+        raise click.ClickException(str(exc)) from exc
+
+    click.echo(f"Published: {page_url}")
 
 
 @cli.command()
